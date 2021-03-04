@@ -185,19 +185,19 @@ export function Menu(props) {
   return (
     <div className="menuContainer">
       <div className="appBar">
-        <Link to="EstoqueElox-Web/" className={location.pathname === "/EstoqueElox-Web/" ? "selected" : null}>
+        <Link to="/" className={location.pathname === "/" ? "selected" : null}>
           <FaBox size={16} fill={"#aaa"} />
           <p>Estoque</p>
         </Link>
-        <Link to="EstoqueElox-Web/Bateria" className={location.pathname === "/EstoqueElox-Web/Bateria" ? "selected" : null}>
+        <Link to="/Bateria" className={location.pathname === "/Bateria" ? "selected" : null}>
           <FaCarBattery size={16} fill={"#aaa"} />
           <p>Bateria</p>
         </Link>
-        <Link to="EstoqueElox-Web/Sucata" className={location.pathname === "/EstoqueElox-Web/Sucata" ? "selected" : null}>
+        <Link to="/Sucata" className={location.pathname === "/Sucata" ? "selected" : null}>
           <FaDolly size={16} fill={"#aaa"} />
           <p>Sucata</p>
         </Link>
-        <Link to="EstoqueElox-Web/#" className={location.pathname === "/EstoqueElox-Web/Logs" ? "selected" : null}>
+        <Link to="/#" className={location.pathname === "/Logs" ? "selected" : null}>
           <FaCommentAlt size={16} fill={"#aaa"} />
           <p>Logs</p>
         </Link>
