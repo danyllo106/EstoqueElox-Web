@@ -181,23 +181,23 @@ export function ExtratoEstoque(props) {
 }
 export function Menu(props) {
   const location = useLocation();
-
+  console.log(location.pathname)
   return (
     <div className="menuContainer">
       <div className="appBar">
-        <Link to="/EstoqueElox-Web/" className={location.pathname === "/" ? "selected" : null}>
+        <Link to="/EstoqueElox-Web/" className={location.pathname === "/EstoqueElox-Web/" ? "selected" : null}>
           <FaBox size={16} fill={"#aaa"} />
           <p>Estoque</p>
         </Link>
-        <Link to="/EstoqueElox-Web/Bateria" className={location.pathname === "/Bateria" ? "selected" : null}>
+        <Link to="/EstoqueElox-Web/Bateria" className={location.pathname === "/EstoqueElox-Web/Bateria" ? "selected" : null}>
           <FaCarBattery size={16} fill={"#aaa"} />
           <p>Bateria</p>
         </Link>
-        <Link to="/EstoqueElox-Web/Sucata" className={location.pathname === "/Sucata" ? "selected" : null}>
+        <Link to="/EstoqueElox-Web/Sucata" className={location.pathname === "/EstoqueElox-Web/Sucata" ? "selected" : null}>
           <FaDolly size={16} fill={"#aaa"} />
           <p>Sucata</p>
         </Link>
-        <Link to="/EstoqueElox-Web/#" className={location.pathname === "/Logs" ? "selected" : null}>
+        <Link to="/EstoqueElox-Web/#" className={location.pathname === "/EstoqueElox-Web/Logs" ? "selected" : null}>
           <FaCommentAlt size={16} fill={"#aaa"} />
           <p>Logs</p>
         </Link>
