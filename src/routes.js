@@ -13,10 +13,10 @@ export default function Routes() {
     <BrowserRouter basename="/EstoqueElox-Web">
       <Switch>
         <Menu>
-          <Route path="/" exact component={Estoque} />
-          <Route path="/Bateria" component={Bateria} />
-          <Route path="/Sucata" component={Sucata} />
-          <Route path="/Logs" component={Logs} />
+          <Route path="/EstoqueElox-Web/" exact component={Estoque} />
+          <Route path="/EstoqueElox-Web/Bateria" component={Bateria} />
+          <Route path="/EstoqueElox-Web/Sucata" component={Sucata} />
+          <Route path="/EstoqueElox-Web/Logs" component={Logs} />
         </Menu>
       </Switch>
     </BrowserRouter>
