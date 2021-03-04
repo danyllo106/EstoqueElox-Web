@@ -10,7 +10,7 @@ import { Menu } from './utils/componentes';
 
 export default function Routes() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/EstoqueElox-Web">
       <Switch>
         <Menu>
           <Route path="/" exact component={Estoque} />
