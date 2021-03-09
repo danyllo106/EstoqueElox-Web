@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Carregando, ContainerItem } from '../../utils/componentes'
 import api from '../../utils/api'
+import './style.css'
 function Index() {
 
   const [dados, setDados] = useState([])
   const [produtos, setProdutos] = useState([])
   const [produtosTemp, setProdutosTemp] = useState([])
-
+  const [pesquisarValue, setPesquisarValue] = useState()
   useEffect(() => {
     getProdutos()
   }, [])
@@ -68,22 +69,52 @@ function Index() {
         })
 
         setProdutos(final_estoque)
-        setProdutosTemp(final_estoque)
+        let produtos_temp = final_estoque.filter(el => { return el.quantidade > 0 })
+        setProdutosTemp(produtos_temp)
 
         return data.data
       })
       .catch(err => console.error(err));
 
   }
-  if (produtosTemp.length <= 0)
+  const pesquisar = async (text) => {
+    if (text) {
+      let search = produtos.filter((el) => {
+        return el.referencia.toUpperCase().includes(text.toUpperCase()) ||
+          el.descricao.toUpperCase().includes(text.toUpperCase()) ||
+          el.marca.toUpperCase().includes(text.toUpperCase())
+      })
+      setProdutosTemp(search)
+    } else {
+      let produtos_temp = produtos.filter(el => { return el.quantidade > 0 })
+      setProdutosTemp(produtos_temp)
+    }
+
+  }
+  if (produtosTemp.length <= 0 && !pesquisarValue)
     return <Carregando />
   return (
-    <div >
-      <p>Estoque</p>
+    <div style={{ padding: 10 }}>
+
+      <input
+        placeholder={"Pesquisar... Ex: 22MPD; 60AH; KONDOR; "}
+        onChange={(text) => {
+          setPesquisarValue(text.target.value)
+          pesquisar(text.target.value)
+        }}
+        className="pesquisar" />
+      <h3 style={{ color: '#aaa' }}>Estoque</h3>
       {
         produtosTemp.map((el) =>
           <ContainerItem key={el.id} dados={el} />
         )
+      }
+      {
+        produtosTemp.length == 0 ?
+          <div className="nenhum">
+            <p style={{color:'#aaa'}}>Nenhum produto encontrado</p>
+          </div>
+          : null
       }
 
     </div>

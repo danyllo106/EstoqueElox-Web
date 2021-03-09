@@ -64,7 +64,7 @@ function Index() {
     return <Carregando/>
   return (
     <div >
-      <p>Bateria</p>
+      <h3 style={{ color: '#aaa',marginLeft:10 }}>Bateria</h3>
       {
         lista.map((element, index) =>
           <ExtratoEstoque

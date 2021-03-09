@@ -2,12 +2,21 @@ import React from 'react';
 import './componentesStyles.css'
 import { useLocation } from 'react-router-dom'
 import moment from 'moment'
-import { FaBox, FaCarBattery, FaCommentAlt, FaDolly, FaImage, FaMinus, FaMusic, FaPlus } from "react-icons/fa";
-import { Link } from 'react-router-dom';
+import { FaBox, FaCarBattery, FaCaretLeft, FaCommentAlt, FaDolly, FaImage, FaMinus, FaMusic, FaPlus } from "react-icons/fa";
+import { Link, useHistory } from 'react-router-dom';
 import Lottie from 'react-lottie'
 
 function selectColor(value) {
   return value >= 0 ? '#2ecc71' : '#e74c3c'
+}
+export function BackButton(props) {
+  let history = useHistory()
+  return (
+    <div className="containerBackButton" onClick={() => history.goBack()}>
+      <FaCaretLeft size={28} fill={'#aaa'} />
+      <p>Voltar</p>
+    </div>
+  )
 }
 export function Carregando(props) {
   const defaultOptions = {
@@ -36,8 +45,7 @@ export function ButtonMostrarMais(props) {
   )
 }
 export function ContainerItem(props) {
-  if (props.dados.quantidade === 0)
-    return null
+  
   return (
     <div className="containerItem">
       <table>
@@ -96,7 +104,7 @@ export function ExtratoSucata(props) {
       type={'kg'}
       {...props}
     >
-      <div className="containerExtratoSucata">
+      <Link className="containerExtratoSucata" to={`/InfoSucata/${props.dados.valor > 0 ? 'getEntradaSucata' : 'getSaidaSucata'}/${props.dados.id}`}>
         <table >
           <thead>
             <tr>
@@ -131,7 +139,7 @@ export function ExtratoSucata(props) {
           </div>
           <p>Última atualização: {moment(props.dados.atualizacao).format('DD/MM/YYYY HH:mm')}</p>
         </div>
-      </div>
+      </Link>
     </Extrato>
   )
 }
@@ -141,7 +149,7 @@ export function ExtratoEstoque(props) {
       type={'und'}
       {...props}
     >
-      <div className="containerExtratoEstoque">
+      <Link className="containerExtratoEstoque" to={`/InfoBateria/${props.dados.valor > 0 ? 'getEntradaBaterias' : 'getSaidaBaterias'}/${props.dados.id}`}>
         <table >
           <thead>
             <tr>
@@ -175,13 +183,13 @@ export function ExtratoEstoque(props) {
           </div>
           <p>Última atualização:{moment(props.dados.atualizacao).format('DD/MM/YYYY HH:mm')}</p>
         </div>
-      </div>
+      </Link>
     </Extrato>
   )
 }
 export function Menu(props) {
   const location = useLocation();
-  console.log(location.pathname)
+
   return (
     <div className="menuContainer">
       <div className="appBar">

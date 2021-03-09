@@ -42,7 +42,7 @@ function Index() {
     return <Carregando/>
   return (
     <div >
-      <p>Sucata</p>
+      <h3 style={{ color: '#aaa',marginLeft:10 }}>Sucata</h3>
       {
         lista.map((item, index) =>
           <ExtratoSucata
