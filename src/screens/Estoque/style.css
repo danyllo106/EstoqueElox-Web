@@ -6,12 +6,58 @@
   width: -moz-available;
   border: none;
   background-color: transparent;
-  border-bottom:1px solid #aaa;
+  border-bottom: 1px solid #aaa;
   margin-bottom: 10px;
-  
+  width: -webkit-fill-available
 }
-.nenhum{
-  display:flex;
-  justify-content:center;
-  align-items:center
+
+.nenhum {
+  display: flex;
+  justify-content: center;
+  align-items: center
+}
+
+.containerImprimir {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+}
+
+.imprimir {
+  padding: 10px;
+  border: 1px solid #3498db;
+  color: #3498db;
+  border-radius: 3px;
+  transition: all .2s;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.imprimir:hover {
+  background-color: rgba(52, 159, 219, 0.1);
+}
+
+.containerImprmirPrint {
+  width: calc(100% - 80px);
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  right: 0;
+  left: 80px;
+}
+
+@media(max-width:720px) {
+  .containerImprmirPrint {
+    width: 100%;
+    display: flex;
+    height: calc(100% - 60px);
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    left: 0px;
+    bottom: 60px;
+  }
 }

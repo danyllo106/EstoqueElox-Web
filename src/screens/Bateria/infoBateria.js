@@ -8,18 +8,16 @@ import './style.css'
 import { useParams } from 'react-router-dom';
 function Index(props) {
   let { id, funcao } = useParams()
-  useEffect(() => {
-    let params = new URLSearchParams();
+  let params = new URLSearchParams();
     params.append('usuario', 'controlador_estoque');
     params.append('senha', 'kondor987456');
-
+  useEffect(() => {
     const getDados = async () =>
-      await api.post(`/?funcao=${funcao}&id=${id}`, params)
+      await api.post(`/?funcao=${funcao}&id=${id}&tosken=${localStorage.getItem('token')}`,params)
         .then(async (data) => {
           let dados = data.data[0]
           let info = JSON.parse(data.data[0].dados)
           let produtos = JSON.parse(info.quantidade);
-          console.log(info)
           setInfo(info)
           setDados(dados)
           setProdutos(produtos)
@@ -27,7 +25,7 @@ function Index(props) {
         .catch(err => console.log(err))
 
     getDados()
-  }, [])
+  }, [id,funcao])
   const [info, setInfo] = useState()
   const [dados, setDados] = useState()
   const [produtos, setProdutos] = useState([])
@@ -57,7 +55,7 @@ function Index(props) {
           </div>
           {
             produtos.map((el) =>
-              <ContainerItem key={el.id} dados={el} />
+              <ContainerItem key={el.id}  dados={el} />
             )
           }
 
@@ -78,7 +76,7 @@ function Index(props) {
         <p>Lançado em {moment(dados.lancado).format('DD/MM/YYYY HH:mm')}</p>
         {
           dados.imagemobs ?
-            <img src={"https://www.estoque.danyllo106.com/uploads/imagens/" + dados.imagemobs} />
+            <img alt={"Imagem de Observação"} src={"https://www.estoque.danyllo106.com/uploads/imagens/" + dados.imagemobs} />
             : null
         }
         {

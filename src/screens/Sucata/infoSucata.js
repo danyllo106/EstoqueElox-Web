@@ -12,16 +12,15 @@ function Index(props) {
     let params = new URLSearchParams();
     params.append('usuario', 'controlador_estoque');
     params.append('senha', 'kondor987456');
-
     const getDados = async () =>
-      await api.post(`/?funcao=${funcao}&id=${id}`, params)
+      await api.post(`/?funcao=${funcao}&id=${id}&tsoken=${localStorage.getItem('token')}`,params)
         .then(async (data) => {
           setDados(data.data[0])
         })
         .catch(err => console.log(err))
 
     getDados()
-  }, [])
+  }, [id,funcao])
   const [dados, setDados] = useState()
   if (!dados)
     return <Carregando />
@@ -33,12 +32,12 @@ function Index(props) {
         <div className="containerLeft">
 
           <div style={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-            <p style={{ fontSize: 22, fontWeight: 'bold', color: "#aaa" }}>{funcao == 'getEntradaSucata' ? 'Entrada de Sucata' : 'Saída de Sucata'}</p>
+            <p style={{ fontSize: 22, fontWeight: 'bold', color: "#aaa" }}>{funcao === 'getEntradaSucata' ? 'Entrada de Sucata' : 'Saída de Sucata'}</p>
             <p style={{ fontSize: 18 }}>{moment(dados.data).format('DD/MM/YYYY HH:mm')}</p>
             <p style={{ fontSize: 32 }}>Peso</p>
-            <p style={{ fontSize: 64, color: funcao == 'getEntradaSucata' ? '#2ecc71' : '#e74c3c' }}>
+            <p style={{ fontSize: 64, color: funcao === 'getEntradaSucata' ? '#2ecc71' : '#e74c3c' }}>
               {
-                funcao == 'getEntradaSucata' ?
+                funcao === 'getEntradaSucata' ?
                   parseFloat(dados.valor).toLocaleString('pt-BR')
                   : parseFloat(dados.valor * -1).toLocaleString('pt-BR')
               }kg</p>
@@ -63,7 +62,7 @@ function Index(props) {
         <p>Lançado em {moment(dados.lancado).format('DD/MM/YYYY HH:mm')}</p>
         {
           dados.imagemobs ?
-            <img src={"https://www.estoque.danyllo106.com/uploads/imagens/" + dados.imagemobs} />
+            <img alt="Imagem de Observação" src={"https://www.estoque.danyllo106.com/uploads/imagens/" + dados.imagemobs} />
             : null
         }
         {

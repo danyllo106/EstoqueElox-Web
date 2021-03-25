@@ -320,3 +320,132 @@ a{
     margin-bottom: 80px;
   }
 }
+
+/* LOG ITEM */
+.logContainer{
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: white;
+  margin: 10px;
+  width: calc(100% - 30px);
+  border-radius: 4px;
+  border-left: 5px solid red;
+  flex-direction: column;
+  padding: 5px;
+  cursor: pointer;
+}
+.containerDateLogs{
+  background-color: #3498db;
+  width: 80px;
+  padding: 5px;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+}
+.containerDateLogs p{
+  color: #eee;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+
+/* CONTAINER NEWOLD */
+.containerNewOld{
+  display: flex;
+  justify-content: center;
+}
+.containerNewOld div{
+  border-bottom: 2px solid #3498db;
+  padding: 9px;
+  transition: all .2s;
+  cursor: pointer;
+}
+.containerNewOld p{
+  color: #aaa;
+}
+
+.containerNewOld .selected p{
+  color: #3498db !important;
+  font-weight: bold;
+}
+.containerNewOld div:hover{
+  background-color: rgba(52, 152, 219,0.3);
+}
+.containerNewOld div:hover p{
+  color: #3498db !important;
+} 
+
+@media(max-width:720px) {
+  .containerNewOld{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  .containerNewOld div{
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* CONTAINER LOGIN */
+.containerLogin{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  
+}
+.containerLogin div:first-child{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: white;
+  padding: 10px;
+  border-radius: 3px;
+  height: 60%;
+  min-height: 300px;
+}
+.containerLogin input, .containerLogin button{
+  padding: 10px;
+  border-radius: 3px;
+  border:1px solid #ccc;
+  font-size: 18px;
+  margin: 5px;
+  min-width: 300px;
+  outline: none;
+}
+.containerLogin button{
+  width: calc(100% - 10px);
+  cursor: pointer;
+  border:1px solid #3498db;
+  background-color: #3498db;
+  color: white;
+}
+
+
+/* CONTAINER TOAST */
+.containerToast{
+  display: flex;
+  align-items: center;
+  position:absolute;
+  bottom: 10px;
+  right: 10px;
+  max-width: 500px;
+  width: 50%;
+  padding: 15px;
+  background-color: #e74c3c;
+  border-radius: 3px;
+  justify-content: space-between;
+}
+.containerToast p{
+  color: white;
+}

@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './componentesStyles.css'
 import { useLocation } from 'react-router-dom'
 import moment from 'moment'
-import { FaBox, FaCarBattery, FaCaretLeft, FaCommentAlt, FaDolly, FaImage, FaMinus, FaMusic, FaPlus } from "react-icons/fa";
+import { FaBox, FaCarBattery, FaCaretLeft, FaCheck, FaCheckDouble, FaCommentAlt, FaDolly, FaImage, FaMinus, FaMusic, FaPlus, FaTimes } from "react-icons/fa";
 import { Link, useHistory } from 'react-router-dom';
 import Lottie from 'react-lottie'
-
+import api from './api'
+import logo from '../assets/logoElox.png'
+import jwt_decode from "jwt-decode";
 function selectColor(value) {
   return value >= 0 ? '#2ecc71' : '#e74c3c'
 }
@@ -45,27 +47,54 @@ export function ButtonMostrarMais(props) {
   )
 }
 export function ContainerItem(props) {
-  
+
   return (
-    <div className="containerItem">
-      <table>
-        <thead>
-          <tr>
-            <th>Referência</th>
-            <th>Descrição</th>
-            <th>Marca</th>
-            <th>Quant</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{props.dados.referencia}</td>
-            <td>{props.dados.descricao}</td>
-            <td>{props.dados.marca}</td>
-            <td>{props.dados.quantidade}</td>
-          </tr>
-        </tbody>
-      </table>
+    <div>
+      {
+        props.id ?
+          <Link className="containerItem" to={'./GetByBateria/' + props.id}>
+            <table>
+              <thead>
+                <tr>
+                  <th>Referência</th>
+                  <th>Descrição</th>
+                  <th>Marca</th>
+                  <th>Quant</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{props.dados.referencia}</td>
+                  <td>{props.dados.descricao}</td>
+                  <td>{props.dados.marca}</td>
+                  <td>{props.dados.quantidade}</td>
+                </tr>
+              </tbody>
+            </table>
+          </Link>
+          :
+          <div className="containerItem" >
+            <table>
+              <thead>
+                <tr>
+                  <th>Referência</th>
+                  <th>Descrição</th>
+                  <th>Marca</th>
+                  <th>Quant</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{props.dados.referencia}</td>
+                  <td>{props.dados.descricao}</td>
+                  <td>{props.dados.marca}</td>
+                  <td>{props.dados.quantidade}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+      }
     </div>
   )
 }
@@ -104,7 +133,7 @@ export function ExtratoSucata(props) {
       type={'kg'}
       {...props}
     >
-      <Link className="containerExtratoSucata" to={`/InfoSucata/${props.dados.valor > 0 ? 'getEntradaSucata' : 'getSaidaSucata'}/${props.dados.id}`}>
+      <Link className="containerExtratoSucata" to={`/elox/InfoSucata/${props.dados.valor > 0 ? 'getEntradaSucata' : 'getSaidaSucata'}/${props.dados.id}`}>
         <table >
           <thead>
             <tr>
@@ -149,7 +178,7 @@ export function ExtratoEstoque(props) {
       type={'und'}
       {...props}
     >
-      <Link className="containerExtratoEstoque" to={`/InfoBateria/${props.dados.valor > 0 ? 'getEntradaBaterias' : 'getSaidaBaterias'}/${props.dados.id}`}>
+      <Link className="containerExtratoEstoque" to={`/elox/InfoBateria/${props.dados.valor > 0 ? 'getEntradaBaterias' : 'getSaidaBaterias'}/${props.dados.id}`}>
         <table >
           <thead>
             <tr>
@@ -187,25 +216,114 @@ export function ExtratoEstoque(props) {
     </Extrato>
   )
 }
+
 export function Menu(props) {
   const location = useLocation();
+  const [logar, setLogar] = useState(false)
+  const [usuario, setUsuario] = useState('controlador_estoque')
+  const [senha, setSenha] = useState('kondor987456')
+  const [init, setInit] = useState(false)
+  const [msg, setMsg] = useState('')
+  const [disabled, setDisabled] = useState(false)
+  useEffect(() => {
+    // if (localStorage.getItem('token')) {
+    //   api.get('/?funcao=logar&token=' + localStorage.getItem('token'))
+    //     .then(async (data) => {
+    //       if (data.data.status === "erro") {
+    //         localStorage.removeItem('token')
+    //         setLogar(true)
+    //       } else {
+    //         setLogar(false)
+    //       }
+    //       setInit(false)
+    //     })
+    //     .catch(err => {
+    //       setLogar(true)
+    //       setInit(false)
+    //     })
+    // } else {
+    //   setInit(false)
+    // }
+  }, [location.pathname])
+  async function login() {
+    setDisabled(true)
+    let params = new URLSearchParams();
+    params.append('usuario', usuario);
+    params.append('senha', senha);
+    params.append('classe', 'logar')
 
+    await api.post('/', params)
+      .then(async (data) => {
+        if (data.data.status === "success") {
+          await localStorage.setItem('token', data.data.msg.token)
+          console.log(data.data.token,jwt_decode(data.data.token))
+          setLogar(false)
+          setDisabled(false)
+        } else {
+          setDisabled(false)
+          setMsg(data.data.msg)
+          setTimeout(()=>{
+            setMsg('')
+          },5000)
+          setLogar(true)
+          localStorage.removeItem('token')
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+  if (init)
+    return (
+      <Carregando />
+    )
+
+  if (logar)
+    return (
+      <>
+        <div className={"containerLogin"}>
+          <div>
+            <img alt="Imagem de Observação" src={logo} style={{ width: 200 }} />
+            <input disabled={disabled} placeholder="Usuário"
+              onChange={(text) => {
+                setUsuario(text.target.value)
+              }} />
+            <input disabled={disabled} type="password"
+              placeholder="Senha"
+              onChange={(text) => {
+                setSenha(text.target.value)
+              }}
+            />
+            <button disabled={disabled} onClick={() => login()}>{disabled?'Logando...':'Logar'}</button>
+          </div>
+        </div>
+        {
+          msg !== '' ?
+            <div className="containerToast">
+              <p>{msg}</p>
+              <FaTimes style={{cursor:'pointer'}} fill={"white"} onClick={() => setMsg('')} />
+            </div>
+            : null
+        }
+
+      </>
+    )
   return (
     <div className="menuContainer">
       <div className="appBar">
-        <Link to="/" className={location.pathname === "/" ? "selected" : null}>
+        <Link to="/elox/" className={location.pathname === "/elox/" ? "selected" : null}>
           <FaBox size={16} fill={"#aaa"} />
           <p>Estoque</p>
         </Link>
-        <Link to="/Bateria" className={location.pathname === "/Bateria" ? "selected" : null}>
+        <Link to="/elox/Bateria" className={location.pathname === "/elox/Bateria" ? "selected" : null}>
           <FaCarBattery size={16} fill={"#aaa"} />
           <p>Bateria</p>
         </Link>
-        <Link to="/Sucata" className={location.pathname === "/Sucata" ? "selected" : null}>
+        <Link to="/elox/Sucata" className={location.pathname === "/elox/Sucata" ? "selected" : null}>
           <FaDolly size={16} fill={"#aaa"} />
           <p>Sucata</p>
         </Link>
-        <Link to="/#" className={location.pathname === "/Logs" ? "selected" : null}>
+        <Link to="/elox/Logs" className={location.pathname === "/elox/Logs" ? "selected" : null}>
           <FaCommentAlt size={16} fill={"#aaa"} />
           <p>Logs</p>
         </Link>
@@ -217,5 +335,123 @@ export function Menu(props) {
         {props.children}
       </div>
     </div >
+  )
+}
+export function ItemLog(props) {
+  const [mensagem, setMensagem] = useState('')
+  const [color, setColor] = useState('red')
+  const [rota, setRota] = useState('')
+  useEffect(() => {
+    let msg = "Fulano;"
+    if (props.dados.classe === "bateria") {
+      if (props.dados.funcao === "adicionar_entrada")
+        msg += "ADICIONOU;" + props.dados.dados.dados.quantidade.reduce((ac, ar) => { return ac + parseInt(ar.quantidade) }, 0) + " baterias ao estoque;"
+      if (props.dados.funcao === "adicionar_saida")
+        msg += "RETIROU;" + props.dados.dados.dados.quantidade.reduce((ac, ar) => { return ac + parseInt(ar.quantidade) }, 0) + " baterias do estoque;" + props.dados.dados.dados.nome
+      if (props.dados.funcao === "atualizar_entrada")
+        msg += "ATUALIZOU;uma entrada de " + props.dados.dados.olddata.dados.quantidade.reduce((ac, ar) => { return ac + parseInt(ar.quantidade) }, 0) + " baterias para "
+          + props.dados.dados.newdata.dados.quantidade.reduce((ac, ar) => { return ac + parseInt(ar.quantidade) }, 0) + ";"
+      if (props.dados.funcao === "atualizar_saida")
+        msg += "ATUALIZOU;uma saída de " + props.dados.dados.olddata.dados.quantidade.reduce((ac, ar) => { return ac + parseInt(ar.quantidade) }, 0) + " baterias para "
+          + props.dados.dados.newdata.dados.quantidade.reduce((ac, ar) => { return ac + parseInt(ar.quantidade) }, 0) + ";" + props.dados.dados.olddata.dados.nome
+      if (props.dados.funcao === "deletar_entrada")
+        msg += "DELETOU;uma entrada de baterias do estoque"
+      if (props.dados.funcao === "deletar_saida")
+        msg += "DELETOU;uma saída de baterias do estoque"
+    } else {
+      if (props.dados.funcao === "adicionar_entrada")
+        msg += "ADICIONOU;" + props.dados.dados.valor + "kg de sucata ao estoque"
+      if (props.dados.funcao === "adicionar_saida")
+        msg += "RETIROU;" + props.dados.dados.valor + "kg de sucata do estoque"
+      if (props.dados.funcao === "atualizar_entrada")
+        msg += "ATUALIZOU;uma entrada de " + props.dados.dados.olddata.valor + "kg de sucata para "
+          + props.dados.dados.newdata.valor + "kg"
+      if (props.dados.funcao === "atualizar_saida")
+        msg += "ATUALIZOU;uma saída de " + props.dados.dados.olddata.valor + "kg de sucata para "
+          + props.dados.dados.newdata.valor
+      if (props.dados.funcao === "deletar_entrada")
+        msg += "DELETOU;um entrada de sucata do estoque"
+      if (props.dados.funcao === "deletar_saida")
+        msg += "DELETOU;uma saída de sucata do estoque"
+    }
+    if (props.dados.funcao.includes('adicionar'))
+      if (props.dados.funcao.includes('entrada')) {
+        setRota(props.dados.classe === "bateria" ? './InfoBateria/getEntradaBaterias/' + props.dados.dados.id : './InfoSucata/getEntradaSucata/' + props.dados.dados.id)
+        setColor('#2ecc71')
+      } else {
+        setRota(props.dados.classe === "bateria" ? './InfoBateria/getSaidaBaterias/' + props.dados.dados.id : './InfoSucata/getSaidaSucata/' + props.dados.dados.id)
+        setColor('#f39c12')
+      }
+    if (props.dados.funcao.includes('atualizar')) {
+      setColor('#2980b9')
+      setRota(props.dados.classe === "bateria" ? './InfoBateriaLog/' + props.dados.id : './InfoSucataLog/' + props.dados.id)
+    }
+    if (props.dados.funcao.includes('deletar')) {
+      setColor('#e74c3c')
+      if (props.dados.funcao.includes('entrada')) {
+        setRota(props.dados.classe === "bateria" ? './InfoBateria/getEntradaBaterias/' + props.dados.dados.id : './InfoSucata/getEntradaSucata/' + props.dados.dados.id)
+      } else {
+        setRota(props.dados.classe === "bateria" ? './InfoBateria/getSaidaBaterias/' + props.dados.dados.id : './InfoSucata/getSaidaSucata/' + props.dados.dados.id)
+      }
+    }
+    setMensagem(msg)
+  }, [props.dados])
+  return (
+    <>
+      {
+        props.index === 0 || new Date(props.logs[props.index - 1].data).getDate() !== new Date(props.logs[props.index].data).getDate() ?
+          <div className="containerDateLogs">
+            <p>{moment(props.dados.data).format("DD/MM")}</p>
+          </div>
+
+          : null
+      }
+      <Link to={rota}
+        className="logContainer"
+        style={{ borderLeftColor: color }}>
+        <strong style={{ color: '#aaa' }}>#{props.dados.classe}</strong>
+        <p>Data: {moment(props.dados.data).format("DD/MM/YYYY HH:mm")}</p>
+
+        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
+
+          <p>
+            {mensagem.split(';')[0]}
+            <b style={{ color: color }}> {mensagem.split(';')[1]} </b>
+            {mensagem.split(';')[2]}
+            {
+              mensagem.split(';')[3] ?
+                <b style={{ color: color }}>{" - " + mensagem.split(';')[3]}</b>
+                : null
+            }
+          </p>
+          {
+            props.dados.status === "pendente" ?
+              <FaCheck fill={'#aaa'} />
+              :
+              <FaCheckDouble fill={'#2980b9'} />
+          }
+
+        </div>
+      </Link>
+    </>
+  )
+}
+export function NewOld(props) {
+  const [dados, setDados] = useState('antigo')
+  return (
+    <div className="containerNewOld">
+      <div className={dados === "antigo" ? "selected" : null} onClick={() => {
+        setDados('antigo')
+        props.method('antigo')
+      }}>
+        <p>Dados Antigos</p>
+      </div>
+      <div className={dados === "novo" ? "selected" : null} onClick={() => {
+        setDados('novo')
+        props.method('novo')
+      }}>
+        <p>Dados Novos</p>
+      </div>
+    </div>
   )
 }

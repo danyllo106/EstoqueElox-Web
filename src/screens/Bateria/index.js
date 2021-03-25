@@ -7,13 +7,13 @@ function Index() {
   const [quantItens, setQuantItens] = useState(10)
   useEffect(() => {
     getBateria()
+    // eslint-disable-next-line
   }, [])
   const getBateria = async () => {
     let params = new URLSearchParams();
     params.append('usuario', 'controlador_estoque');
     params.append('senha', 'kondor987456');
-
-    await api.post('/?funcao=estoque', params)
+    await api.post('/?funcao=estoque&tsoken='+localStorage.getItem('token'),params)
       .then(async (data) => {
 
         let baterias = []
