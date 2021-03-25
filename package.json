@@ -2,7 +2,7 @@
   "name": "estoque-elox-web",
   "version": "0.1.0",
   "private": true,
-  "homepage": ".",
+  "homepage": "https://danyllo106.github.io/elox/",
   "dependencies": {
     "@react-pdf/renderer": "^1.6.13",
     "@testing-library/jest-dom": "^5.11.9",
