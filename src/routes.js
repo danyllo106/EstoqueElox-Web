@@ -67,7 +67,7 @@ export default function Routes() {
     //     </Menu>
     //   </Switch>
     // </BrowserRouter>
-    <BrowserRouter>
+    <BrowserRouter  basename="/EstoqueElox-Web">
       <Switch>
         <Menu>
           <Route path="/" exact component={Estoque} />
