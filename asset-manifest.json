@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/EstoqueElox-Web/static/css/main.a129f2e2.chunk.css",
-    "main.js": "/EstoqueElox-Web/static/js/main.4625f1c3.chunk.js",
-    "main.js.map": "/EstoqueElox-Web/static/js/main.4625f1c3.chunk.js.map",
+    "main.js": "/EstoqueElox-Web/static/js/main.cb47d33e.chunk.js",
+    "main.js.map": "/EstoqueElox-Web/static/js/main.cb47d33e.chunk.js.map",
     "runtime-main.js": "/EstoqueElox-Web/static/js/runtime-main.08226d42.js",
     "runtime-main.js.map": "/EstoqueElox-Web/static/js/runtime-main.08226d42.js.map",
     "static/css/2.3e35cbb6.chunk.css": "/EstoqueElox-Web/static/css/2.3e35cbb6.chunk.css",
@@ -19,6 +19,6 @@
     "static/css/2.3e35cbb6.chunk.css",
     "static/js/2.b936b045.chunk.js",
     "static/css/main.a129f2e2.chunk.css",
-    "static/js/main.4625f1c3.chunk.js"
+    "static/js/main.cb47d33e.chunk.js"
   ]
 }
