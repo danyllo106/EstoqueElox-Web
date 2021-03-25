@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "./static/css/main.a129f2e2.chunk.css",
-    "main.js": "./static/js/main.f14ed0ec.chunk.js",
-    "main.js.map": "./static/js/main.f14ed0ec.chunk.js.map",
-    "runtime-main.js": "./static/js/runtime-main.ae1c6e6c.js",
-    "runtime-main.js.map": "./static/js/runtime-main.ae1c6e6c.js.map",
-    "static/css/2.3e35cbb6.chunk.css": "./static/css/2.3e35cbb6.chunk.css",
-    "static/js/2.74b9fc13.chunk.js": "./static/js/2.74b9fc13.chunk.js",
-    "static/js/2.74b9fc13.chunk.js.map": "./static/js/2.74b9fc13.chunk.js.map",
-    "index.html": "./index.html",
-    "static/css/2.3e35cbb6.chunk.css.map": "./static/css/2.3e35cbb6.chunk.css.map",
-    "static/css/main.a129f2e2.chunk.css.map": "./static/css/main.a129f2e2.chunk.css.map",
-    "static/js/2.74b9fc13.chunk.js.LICENSE.txt": "./static/js/2.74b9fc13.chunk.js.LICENSE.txt",
-    "static/media/logoElox.847e219d.png": "./static/media/logoElox.847e219d.png"
+    "main.css": "/EstoqueElox-Web/static/css/main.a129f2e2.chunk.css",
+    "main.js": "/EstoqueElox-Web/static/js/main.4625f1c3.chunk.js",
+    "main.js.map": "/EstoqueElox-Web/static/js/main.4625f1c3.chunk.js.map",
+    "runtime-main.js": "/EstoqueElox-Web/static/js/runtime-main.08226d42.js",
+    "runtime-main.js.map": "/EstoqueElox-Web/static/js/runtime-main.08226d42.js.map",
+    "static/css/2.3e35cbb6.chunk.css": "/EstoqueElox-Web/static/css/2.3e35cbb6.chunk.css",
+    "static/js/2.b936b045.chunk.js": "/EstoqueElox-Web/static/js/2.b936b045.chunk.js",
+    "static/js/2.b936b045.chunk.js.map": "/EstoqueElox-Web/static/js/2.b936b045.chunk.js.map",
+    "index.html": "/EstoqueElox-Web/index.html",
+    "static/css/2.3e35cbb6.chunk.css.map": "/EstoqueElox-Web/static/css/2.3e35cbb6.chunk.css.map",
+    "static/css/main.a129f2e2.chunk.css.map": "/EstoqueElox-Web/static/css/main.a129f2e2.chunk.css.map",
+    "static/js/2.b936b045.chunk.js.LICENSE.txt": "/EstoqueElox-Web/static/js/2.b936b045.chunk.js.LICENSE.txt",
+    "static/media/logoElox.847e219d.png": "/EstoqueElox-Web/static/media/logoElox.847e219d.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.ae1c6e6c.js",
+    "static/js/runtime-main.08226d42.js",
     "static/css/2.3e35cbb6.chunk.css",
-    "static/js/2.74b9fc13.chunk.js",
+    "static/js/2.b936b045.chunk.js",
     "static/css/main.a129f2e2.chunk.css",
-    "static/js/main.f14ed0ec.chunk.js"
+    "static/js/main.4625f1c3.chunk.js"
   ]
 }
