@@ -70,16 +70,16 @@ export default function Routes() {
     <BrowserRouter>
       <Switch>
         <Menu>
-          <Route path="/elox/" exact component={Estoque} />
-          <Route path="/elox/Bateria" component={Bateria} />
-          <Route path="/elox/Sucata" component={Sucata} />
-          <Route path="/elox/InfoSucata/:funcao/:id" component={InfoSucata} />
-          <Route path="/elox/InfoBateria/:funcao/:id" component={InfoBateria} />
-          <Route path="/elox/GetByBateria/:id" component={GetByBateria} />
-          <Route path="/elox/ImprimirEstoque" component={ImprimirEstoque} />
-          <Route path="/elox/Logs" component={Logs} />
-          <Route path="/elox/InfoSucataLog/:id" component={InfoSucataLog} />
-          <Route path="/elox/InfoBateriaLog/:id" component={InfoBateriaLog} />
+          <Route path="/" exact component={Estoque} />
+          <Route path="/Bateria" component={Bateria} />
+          <Route path="/Sucata" component={Sucata} />
+          <Route path="/InfoSucata/:funcao/:id" component={InfoSucata} />
+          <Route path="/InfoBateria/:funcao/:id" component={InfoBateria} />
+          <Route path="/GetByBateria/:id" component={GetByBateria} />
+          <Route path="/ImprimirEstoque" component={ImprimirEstoque} />
+          <Route path="/Logs" component={Logs} />
+          <Route path="/InfoSucataLog/:id" component={InfoSucataLog} />
+          <Route path="/InfoBateriaLog/:id" component={InfoBateriaLog} />
         </Menu>
       </Switch>
     </BrowserRouter>

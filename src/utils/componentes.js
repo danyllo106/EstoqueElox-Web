@@ -311,19 +311,19 @@ export function Menu(props) {
   return (
     <div className="menuContainer">
       <div className="appBar">
-        <Link to="/elox/" className={location.pathname === "/elox/" ? "selected" : null}>
+        <Link to="/" className={location.pathname === "/" ? "selected" : null}>
           <FaBox size={16} fill={"#aaa"} />
           <p>Estoque</p>
         </Link>
-        <Link to="/elox/Bateria" className={location.pathname === "/elox/Bateria" ? "selected" : null}>
+        <Link to="/Bateria" className={location.pathname === "/Bateria" ? "selected" : null}>
           <FaCarBattery size={16} fill={"#aaa"} />
           <p>Bateria</p>
         </Link>
-        <Link to="/elox/Sucata" className={location.pathname === "/elox/Sucata" ? "selected" : null}>
+        <Link to="/Sucata" className={location.pathname === "/Sucata" ? "selected" : null}>
           <FaDolly size={16} fill={"#aaa"} />
           <p>Sucata</p>
         </Link>
-        <Link to="/elox/Logs" className={location.pathname === "/elox/Logs" ? "selected" : null}>
+        <Link to="/Logs" className={location.pathname === "/Logs" ? "selected" : null}>
           <FaCommentAlt size={16} fill={"#aaa"} />
           <p>Logs</p>
         </Link>
