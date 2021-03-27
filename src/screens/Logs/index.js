@@ -12,10 +12,8 @@ function Index() {
   }, [])
   const getLogs = async () => {
     let logs = []
-    let params = new URLSearchParams();
-    params.append('usuario', 'controlador_estoque');
-    params.append('senha', 'kondor987456');
-    await api.post('/?funcao=logs&toksen='+localStorage.getItem('token'),params)
+    
+    await api.get('/?funcao=logs&token='+localStorage.getItem('token'))
       .then(async (data) => {
         
         data.data.forEach((element, index) => {

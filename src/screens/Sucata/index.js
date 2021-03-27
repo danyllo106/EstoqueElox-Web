@@ -10,10 +10,7 @@ function Index() {
     // eslint-disable-next-line
   }, [])
   const getSucata = async () => {
-    let params = new URLSearchParams();
-    params.append('usuario', 'controlador_estoque');
-    params.append('senha', 'kondor987456');
-    await api.post('/?funcao=getsucata&tsoken='+localStorage.getItem('token'),params)
+    await api.get('/?funcao=getsucata&token='+localStorage.getItem('token'))
       .then(async (data) => {
         let dados = data.data.entrada
         await data.data.saida.forEach(element => {

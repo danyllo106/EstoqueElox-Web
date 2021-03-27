@@ -9,14 +9,11 @@ import { useParams } from 'react-router-dom';
 function Index(props) {
   let { id } = useParams()
   useEffect(() => {
-    let params = new URLSearchParams();
-    params.append('usuario', 'controlador_estoque');
-    params.append('senha', 'kondor987456');
     const getDados = async () =>
-      await api.post(`/?funcao=getLogsById&id=${id}&tosken=${localStorage.getItem('token')}`,params)
+      await api.get(`/?funcao=getLogsById&id=${id}&token=${localStorage.getItem('token')}`)
         .then(async (data) => {
           let dados = data.data[0]
-          console.log(data.data[0])
+          
           dados.dados=JSON.parse(dados.dados)
           dados.dados.newdata.dados=JSON.parse(dados.dados.newdata.dados)
           dados.dados.newdata.dados.quantidade=JSON.parse(dados.dados.newdata.dados.quantidade)
@@ -103,7 +100,7 @@ function Index(props) {
       <div className="containerRight">
 
 
-        <p>Lançado em {moment(lancamento).format('DD/MM/YYYY HH:mm')}</p>
+        <p>Lançado em {moment(lancamento).format('DD/MM/YYYY HH:mm')} </p>
         {
           dados.imagemobs ?
             <img alt={"Imagem de Observação"} src={"https://www.estoque.danyllo106.com/uploads/imagens/" + dados.imagemobs} />

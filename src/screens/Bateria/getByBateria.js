@@ -16,11 +16,9 @@ function Index() {
   }, [id])
 
   const getBateria = async () => {
-    let params = new URLSearchParams();
-    params.append('usuario', 'controlador_estoque');
-    params.append('senha', 'kondor987456');
+    
 
-    await api.post('/?funcao=estoque&tokzen='+localStorage.getItem('token'),params)
+    await api.get('/?funcao=estoque&token='+localStorage.getItem('token'))
       .then(async (data) => {
 
         let baterias = []

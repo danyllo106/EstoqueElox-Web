@@ -12,16 +12,13 @@ const Index = () => {
 
   const getProdutos = async () => {
     let produtos = []
-    let params = new URLSearchParams();
-    params.append('usuario', 'controlador_estoque');
-    params.append('senha', 'kondor987456');
-    await api.post('/?funcao=getprodutos&toksen='+localStorage.getItem('token'),params)
+    await api.get('/?funcao=getprodutos&token='+localStorage.getItem('token'))
       .then(async (data) => {
         produtos = data.data
       })
       .catch(err => console.log(err))
 
-    await api.post('/?funcao=estoque&tosken='+localStorage.getItem('token'),params)
+    await api.get('/?funcao=estoque&token='+localStorage.getItem('token'))
       .then(async (data) => {
         let saida = []
         let entrada = []

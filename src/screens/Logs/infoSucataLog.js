@@ -9,11 +9,8 @@ import { useParams } from 'react-router-dom';
 function Index(props) {
   let { id } = useParams()
   useEffect(() => {
-    let params = new URLSearchParams();
-    params.append('usuario', 'controlador_estoque');
-    params.append('senha', 'kondor987456');
     const getDados = async () =>
-      await api.get(`/?funcao=getLogsById&id=${id}&tosken=${localStorage.getItem('token')}`,params)
+      await api.get(`/?funcao=getLogsById&id=${id}&token=${localStorage.getItem('token')}`)
         .then(async (data) => {
           data.data[0].dados = JSON.parse(data.data[0].dados)
 

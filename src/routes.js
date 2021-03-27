@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, HashRouter, Route, Switch } from 'react-router-dom';
 
 import Estoque from './screens/Estoque/index'
 import Bateria from './screens/Bateria/index'
@@ -67,21 +67,21 @@ export default function Routes() {
     //     </Menu>
     //   </Switch>
     // </BrowserRouter>
-    <BrowserRouter  basename="/EstoqueElox-Web">
+    <HashRouter  basename="/">
       <Switch>
         <Menu>
-          <Route path="/EstoqueElox-Web/" exact component={Estoque} />
-          <Route path="/EstoqueElox-Web/Bateria" component={Bateria} />
-          <Route path="/EstoqueElox-Web/Sucata" component={Sucata} />
-          <Route path="/EstoqueElox-Web/InfoSucata/:funcao/:id" component={InfoSucata} />
-          <Route path="/EstoqueElox-Web/InfoBateria/:funcao/:id" component={InfoBateria} />
-          <Route path="/EstoqueElox-Web/GetByBateria/:id" component={GetByBateria} />
-          <Route path="/EstoqueElox-Web/ImprimirEstoque" component={ImprimirEstoque} />
-          <Route path="/EstoqueElox-Web/Logs" component={Logs} />
-          <Route path="/EstoqueElox-Web/InfoSucataLog/:id" component={InfoSucataLog} />
-          <Route path="/EstoqueElox-Web/InfoBateriaLog/:id" component={InfoBateriaLog} />
+          <Route path="/" exact component={Estoque} />
+          <Route path="/Bateria" component={Bateria} />
+          <Route path="/Sucata" component={Sucata} />
+          <Route path="/InfoSucata/:funcao/:id" component={InfoSucata} />
+          <Route path="/InfoBateria/:funcao/:id" component={InfoBateria} />
+          <Route path="/GetByBateria/:id" component={GetByBateria} />
+          <Route path="/ImprimirEstoque" component={ImprimirEstoque} />
+          <Route path="/Logs" component={Logs} />
+          <Route path="/InfoSucataLog/:id" component={InfoSucataLog} />
+          <Route path="/InfoBateriaLog/:id" component={InfoBateriaLog} />
         </Menu>
       </Switch>
-    </BrowserRouter>
+    </HashRouter>
   )
 }

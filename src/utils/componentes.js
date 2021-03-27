@@ -133,11 +133,11 @@ export function ExtratoSucata(props) {
       type={'kg'}
       {...props}
     >
-      <Link className="containerExtratoSucata" to={`/elox/InfoSucata/${props.dados.valor > 0 ? 'getEntradaSucata' : 'getSaidaSucata'}/${props.dados.id}`}>
+      <Link className="containerExtratoSucata" to={`/InfoSucata/${props.dados.valor > 0 ? 'getEntradaSucata' : 'getSaidaSucata'}/${props.dados.id}`}>
         <table >
           <thead>
             <tr>
-              <td colSpan="2" className="dateHeaderExtratoSucata">{moment(props.dados.data).format('DD/MM/YYYY HH:mm')}</td>
+              <td colSpan="2" className="dateHeaderExtratoSucata">{moment(props.dados.data).format('DD/MM/YYYY HH:mm')} por {props.dados.create_nome}</td>
             </tr>
             <tr>
               <th>Descrição</th>
@@ -166,7 +166,7 @@ export function ExtratoSucata(props) {
             }
 
           </div>
-          <p>Última atualização: {moment(props.dados.atualizacao).format('DD/MM/YYYY HH:mm')}</p>
+          <p>Última atualização <b>{moment(props.dados.atualizacao).format('DD/MM/YYYY HH:mm')}</b> por <b>{props.dados.update_nome}</b></p>
         </div>
       </Link>
     </Extrato>
@@ -178,11 +178,11 @@ export function ExtratoEstoque(props) {
       type={'und'}
       {...props}
     >
-      <Link className="containerExtratoEstoque" to={`/elox/InfoBateria/${props.dados.valor > 0 ? 'getEntradaBaterias' : 'getSaidaBaterias'}/${props.dados.id}`}>
+      <Link className="containerExtratoEstoque" to={`/InfoBateria/${props.dados.valor > 0 ? 'getEntradaBaterias' : 'getSaidaBaterias'}/${props.dados.id}`}>
         <table >
           <thead>
             <tr>
-              <td colSpan="2" className="dateHeaderExtratoEstoque">{moment(props.dados.lancado).format('DD/MM/YYYY HH:mm')}</td>
+              <td colSpan="2" className="dateHeaderExtratoEstoque">{moment(props.dados.lancado).format('DD/MM/YYYY HH:mm')} por {props.dados.create_nome}</td>
             </tr>
             <tr>
               <th>Descrição</th>
@@ -210,7 +210,7 @@ export function ExtratoEstoque(props) {
                 : null
             }
           </div>
-          <p>Última atualização:{moment(props.dados.atualizacao).format('DD/MM/YYYY HH:mm')}</p>
+          <p>Última atualização {moment(props.dados.atualizacao).format('DD/MM/YYYY HH:mm')} por <b>{props.dados.update_nome}</b></p>
         </div>
       </Link>
     </Extrato>
@@ -219,33 +219,34 @@ export function ExtratoEstoque(props) {
 
 export function Menu(props) {
   const location = useLocation();
-  const [logar, setLogar] = useState(false)
+  const [logar, setLogar] = useState(true)
   const [usuario, setUsuario] = useState('controlador_estoque')
   const [senha, setSenha] = useState('kondor987456')
-  const [init, setInit] = useState(false)
+  const [init, setInit] = useState(true)
   const [msg, setMsg] = useState('')
   const [disabled, setDisabled] = useState(false)
   useEffect(() => {
-    // if (localStorage.getItem('token')) {
-    //   api.get('/?funcao=logar&token=' + localStorage.getItem('token'))
-    //     .then(async (data) => {
-    //       if (data.data.status === "erro") {
-    //         localStorage.removeItem('token')
-    //         setLogar(true)
-    //       } else {
-    //         setLogar(false)
-    //       }
-    //       setInit(false)
-    //     })
-    //     .catch(err => {
-    //       setLogar(true)
-    //       setInit(false)
-    //     })
-    // } else {
-    //   setInit(false)
-    // }
+    if (localStorage.getItem('token')) {
+      api.get('/?funcao=logar&token=' + localStorage.getItem('token'))
+        .then(async (data) => {
+          if (data.data.status === "erro") {
+            localStorage.removeItem('token')
+            setLogar(true)
+          } else {
+            setLogar(false)
+          }
+          setInit(false)
+        })
+        .catch(err => {
+          setLogar(true)
+          setInit(false)
+        })
+    } else {
+      setInit(false)
+    }
   }, [location.pathname])
-  async function login() {
+  const login = async (e) => {
+    e.preventDefault();
     setDisabled(true)
     let params = new URLSearchParams();
     params.append('usuario', usuario);
@@ -256,15 +257,17 @@ export function Menu(props) {
       .then(async (data) => {
         if (data.data.status === "success") {
           await localStorage.setItem('token', data.data.msg.token)
-          console.log(data.data.token,jwt_decode(data.data.token))
+          const user = jwt_decode(data.data.msg.token)
+          await localStorage.setItem('usuario', user.data.usuario)
+          await localStorage.setItem('id', user.data.id)
           setLogar(false)
           setDisabled(false)
         } else {
           setDisabled(false)
           setMsg(data.data.msg)
-          setTimeout(()=>{
+          setTimeout(() => {
             setMsg('')
-          },5000)
+          }, 5000)
           setLogar(true)
           localStorage.removeItem('token')
         }
@@ -284,24 +287,30 @@ export function Menu(props) {
         <div className={"containerLogin"}>
           <div>
             <img alt="Imagem de Observação" src={logo} style={{ width: 200 }} />
-            <input disabled={disabled} placeholder="Usuário"
-              onChange={(text) => {
-                setUsuario(text.target.value)
-              }} />
-            <input disabled={disabled} type="password"
-              placeholder="Senha"
-              onChange={(text) => {
-                setSenha(text.target.value)
-              }}
-            />
-            <button disabled={disabled} onClick={() => login()}>{disabled?'Logando...':'Logar'}</button>
+            <form onSubmit={login}>
+              <input required disabled={disabled} placeholder="Usuário"
+                autoFocus={localStorage.getItem('usuario') ? false : true}
+                defaultValue={localStorage.getItem('usuario') ? localStorage.getItem('usuario') : null}
+                onChange={(text) => {
+                  setUsuario(text.target.value)
+                }} />
+              <input required disabled={disabled} type="password"
+                autoFocus={localStorage.getItem('usuario') ? true : false}
+                placeholder="Senha"
+                onChange={(text) => {
+                  setSenha(text.target.value)
+                }}
+              />
+              <button type="submit" disabled={disabled} >{disabled ? 'Logando...' : 'Logar'}</button>
+            </form>
           </div>
+
         </div>
         {
           msg !== '' ?
             <div className="containerToast">
               <p>{msg}</p>
-              <FaTimes style={{cursor:'pointer'}} fill={"white"} onClick={() => setMsg('')} />
+              <FaTimes style={{ cursor: 'pointer' }} fill={"white"} onClick={() => setMsg('')} />
             </div>
             : null
         }
@@ -311,19 +320,19 @@ export function Menu(props) {
   return (
     <div className="menuContainer">
       <div className="appBar">
-        <Link to="/EstoqueElox-Web/" className={location.pathname === "/EstoqueElox-Web/" ? "selected" : null}>
+        <Link to="/" className={location.pathname === "/" ? "selected" : null}>
           <FaBox size={16} fill={"#aaa"} />
           <p>Estoque</p>
         </Link>
-        <Link to="/EstoqueElox-Web/Bateria" className={location.pathname === "/EstoqueElox-Web/Bateria" ? "selected" : null}>
+        <Link to="/Bateria" className={location.pathname === "/Bateria" ? "selected" : null}>
           <FaCarBattery size={16} fill={"#aaa"} />
           <p>Bateria</p>
         </Link>
-        <Link to="/EstoqueElox-Web/Sucata" className={location.pathname === "/EstoqueElox-Web/Sucata" ? "selected" : null}>
+        <Link to="/Sucata" className={location.pathname === "/Sucata" ? "selected" : null}>
           <FaDolly size={16} fill={"#aaa"} />
           <p>Sucata</p>
         </Link>
-        <Link to="/EstoqueElox-Web/Logs" className={location.pathname === "/EstoqueElox-Web/Logs" ? "selected" : null}>
+        <Link to="/Logs" className={location.pathname === "/Logs" ? "selected" : null}>
           <FaCommentAlt size={16} fill={"#aaa"} />
           <p>Logs</p>
         </Link>
@@ -342,7 +351,7 @@ export function ItemLog(props) {
   const [color, setColor] = useState('red')
   const [rota, setRota] = useState('')
   useEffect(() => {
-    let msg = "Fulano;"
+    let msg =  props.dados.usuario.charAt(0).toUpperCase() + props.dados.usuario.slice(1)+" "
     if (props.dados.classe === "bateria") {
       if (props.dados.funcao === "adicionar_entrada")
         msg += "ADICIONOU;" + props.dados.dados.dados.quantidade.reduce((ac, ar) => { return ac + parseInt(ar.quantidade) }, 0) + " baterias ao estoque;"

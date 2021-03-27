@@ -8,12 +8,9 @@ import './style.css'
 import { useParams } from 'react-router-dom';
 function Index(props) {
   let { id, funcao } = useParams()
-  let params = new URLSearchParams();
-    params.append('usuario', 'controlador_estoque');
-    params.append('senha', 'kondor987456');
   useEffect(() => {
     const getDados = async () =>
-      await api.post(`/?funcao=${funcao}&id=${id}&tosken=${localStorage.getItem('token')}`,params)
+      await api.get(`/?funcao=${funcao}&id=${id}&token=${localStorage.getItem('token')}`)
         .then(async (data) => {
           let dados = data.data[0]
           let info = JSON.parse(data.data[0].dados)
@@ -73,7 +70,7 @@ function Index(props) {
       <div className="containerRight">
 
 
-        <p>Lançado em {moment(dados.lancado).format('DD/MM/YYYY HH:mm')}</p>
+        <p>Lançado em <b>{moment(dados.lancado).format('DD/MM/YYYY HH:mm')}</b> por <b>{dados.create_nome}</b></p>
         {
           dados.imagemobs ?
             <img alt={"Imagem de Observação"} src={"https://www.estoque.danyllo106.com/uploads/imagens/" + dados.imagemobs} />
@@ -88,7 +85,7 @@ function Index(props) {
             : null
         }
 
-        <p>Última atualização em {moment(dados.atualizacao).format('DD/MM/YYYY HH:mm')}</p>
+        <p>Última atualização em <b>{moment(dados.atualizacao).format('DD/MM/YYYY HH:mm')}</b> por <b>{dados.update_nome}</b></p>
       </div>
 
     </>

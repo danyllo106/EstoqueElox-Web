@@ -18,17 +18,14 @@ function Index() {
   }, [])
 
   const getProdutos = async () => {
-    let params = new URLSearchParams();
-    params.append('usuario', 'controlador_estoque');
-    params.append('senha', 'kondor987456');
     let produtos = []
-    await api.post('/?funcao=getprodutos&tosken='+localStorage.getItem('token'),params)
+    await api.get('/?funcao=getprodutos&token='+localStorage.getItem('token'))
       .then(async (data) => {
         produtos = data.data
       })
       .catch(err => console.log(err))
 
-    await api.post('/?funcao=estoque&tosken='+localStorage.getItem('token'),params)
+    await api.get('/?funcao=estoque&token='+localStorage.getItem('token'))
       .then(async (data) => {
         let saida = []
         let entrada = []
@@ -82,11 +79,8 @@ function Index() {
   }
   const getSucata = async () => {
 
-    let params = new URLSearchParams();
-    params.append('usuario', 'controlador_estoque');
-    params.append('senha', 'kondor987456');
 
-    await api.post('/?funcao=getsucata&tokesn='+localStorage.getItem('token'),params)
+    await api.get('/?funcao=getsucata&token='+localStorage.getItem('token'))
       .then(async (data) => {
         let dados = data.data.entrada
         await data.data.saida.forEach(element => {
@@ -106,6 +100,7 @@ function Index() {
           el.descricao.toUpperCase().includes(text.toUpperCase()) ||
           el.marca.toUpperCase().includes(text.toUpperCase())
       })
+      search=search.sort((a,b)=>{return a.quantidade<b.quantidade})
       setProdutosTemp(search)
     } else {
       let produtos_temp = produtos.filter(el => { return el.quantidade > 0 })

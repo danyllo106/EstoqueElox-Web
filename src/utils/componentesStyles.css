@@ -214,6 +214,9 @@ a{
   flex-direction: row;
   justify-content: space-between;
 }
+.observacaoExtratoEstoque p{
+  text-align: right;
+}
 
 .observacaoExtratoEstoque div {
   display: flex;
@@ -402,6 +405,14 @@ a{
   left: 0;
   right: 0;
   
+}
+.containerLogin form{
+  display: flex;
+  flex-direction: column;
+}
+.containerLogin img{
+  margin-bottom: 50px;
+  margin-top: -60px;
 }
 .containerLogin div:first-child{
   display: flex;
