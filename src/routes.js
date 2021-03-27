@@ -10,7 +10,6 @@ import GetByBateria from './screens/Bateria/getByBateria'
 import Logs from './screens/Logs/index'
 import InfoSucataLog from './screens/Logs/infoSucataLog'
 import InfoBateriaLog from './screens/Logs/infoBateriaLog'
-import ImprimirEstoque from './screens/Estoque/imprimirEstoque'
 
 
 import { Menu } from './utils/componentes';
@@ -69,7 +68,6 @@ export default function Routes() {
     // </BrowserRouter>
     <HashRouter basename="/">
       <Switch>
-        <Route path="/ImprimirEstoque" component={ImprimirEstoque} />
         <Menu>
           <Route path="/" exact component={Estoque} />
           <Route path="/Bateria" component={Bateria} />
