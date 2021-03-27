@@ -1,11 +1,71 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Carregando, ContainerItem } from '../../utils/componentes'
 import api from '../../utils/api'
 import './style.css'
-import { Link } from 'react-router-dom';
 import { FaPrint } from 'react-icons/fa';
-function Index() {
+import logo from '../../assets/logoElox.png'
+import moment from 'moment'
+import { useReactToPrint } from 'react-to-print';
+class ComponentToPrint extends React.PureComponent {
 
+  render() {
+
+    return (
+      <div className="page">
+        <div style={{ margin: 35, width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+          <p className="dataEstoque">Estoque realizado em {moment().format('DD/MM/YYYY HH:mm')}</p>
+          <div className="containerImg">
+            <img
+              alt="Logo Elox"
+              style={{ width: 200 }}
+              src={logo}
+            />
+          </div>
+          <div className="row header" style={{ marginBottom: 10 }}>
+            <div style={{ width: '30%' }}>
+              <p >Referência</p>
+            </div>
+            <div style={{ width: '25%' }}>
+              <p >Descrição</p>
+            </div>
+            <div style={{ width: '25%' }}>
+              <p >Marca</p>
+            </div>
+            <div style={{ width: '20%' }}>
+              <p style={{ textAlign: 'right', paddingRight: 10 }}>Qnt</p>
+            </div>
+          </div>
+          {
+            this.props.produtos.map((el, index) =>
+
+              <div key={el.id} className={'row'} >
+                <div className="rowProduto" style={{ width: '30%' }}>
+                  <p>{el.referencia} </p>
+                </div>
+                <div className="rowProduto" style={{ width: '25%' }}>
+                  <p>{el.descricao}</p>
+                </div>
+                <div className="rowProduto" style={{ width: '25%' }}>
+                  <p>{el.marca}</p>
+                </div>
+                <div className="rowProduto" style={{ width: '20%', justifyContent: 'flex-end', paddingRight: 10 }}>
+                  <p >{el.quantidade}</p>
+                </div>
+              </div>
+            )
+          }
+          <p className="total">Total: {this.props.produtos.reduce((ac, arr) => { return ac + arr.quantidade }, 0)}</p>
+        </div>
+      </div>
+    )
+  }
+}
+
+function Index() {
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
   //const [dados, setDados] = useState([])
   const [produtos, setProdutos] = useState([])
   const [produtosTemp, setProdutosTemp] = useState([])
@@ -14,18 +74,18 @@ function Index() {
   useEffect(() => {
     getProdutos()
     getSucata()
-    
+
   }, [])
 
   const getProdutos = async () => {
     let produtos = []
-    await api.get('/?funcao=getprodutos&token='+localStorage.getItem('token'))
+    await api.get('/?funcao=getprodutos&token=' + localStorage.getItem('token'))
       .then(async (data) => {
         produtos = data.data
       })
       .catch(err => console.log(err))
 
-    await api.get('/?funcao=estoque&token='+localStorage.getItem('token'))
+    await api.get('/?funcao=estoque&token=' + localStorage.getItem('token'))
       .then(async (data) => {
         let saida = []
         let entrada = []
@@ -80,7 +140,7 @@ function Index() {
   const getSucata = async () => {
 
 
-    await api.get('/?funcao=getsucata&token='+localStorage.getItem('token'))
+    await api.get('/?funcao=getsucata&token=' + localStorage.getItem('token'))
       .then(async (data) => {
         let dados = data.data.entrada
         await data.data.saida.forEach(element => {
@@ -100,7 +160,7 @@ function Index() {
           el.descricao.toUpperCase().includes(text.toUpperCase()) ||
           el.marca.toUpperCase().includes(text.toUpperCase())
       })
-      search=search.sort((a,b)=>{return a.quantidade<b.quantidade})
+      search = search.sort((a, b) => { return a.quantidade < b.quantidade })
       setProdutosTemp(search)
     } else {
       let produtos_temp = produtos.filter(el => { return el.quantidade > 0 })
@@ -110,7 +170,9 @@ function Index() {
   }
   if (produtosTemp.length <= 0 && !pesquisarValue)
     return <Carregando />
+
   return (
+
     <div style={{ padding: 10 }}>
 
       <input
@@ -126,11 +188,20 @@ function Index() {
           <h3 style={{ color: '#aaa' }}><b>Bateria:</b> {produtos.reduce((ac, arr) => { return ac + arr.quantidade }, 0)}und</h3>
           <h3 style={{ color: '#aaa' }}><b>Sucata:</b> {peso.toLocaleString('pt-BR', { currency: 'BRL' })}Kg</h3>
         </div>
-        <Link to={'./ImprimirEstoque'}
-          className="imprimir" >
-          <FaPrint fill={'#3498db'}/>
+        <div className="imprimir" onClick={handlePrint}>
+          <FaPrint fill={'#3498db'} />
            Imprimir Estoque
-      </Link>
+          </div>
+        <div style={{ display: 'none' }}>
+          <ComponentToPrint produtos={produtosTemp} ref={componentRef} />
+        </div>
+
+        {/* <Link to={'./ImprimirEstoque'}
+          target='_blank'
+          className="imprimir" >
+          <FaPrint fill={'#3498db'} />
+           Imprimir Estoque
+      </Link> */}
       </div>
 
 

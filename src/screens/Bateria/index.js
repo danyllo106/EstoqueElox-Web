@@ -4,7 +4,7 @@ import api from '../../utils/api'
 function Index() {
   const [relatorio, setRelatorio] = useState([])
   const [lista, setLista] = useState([]);
-  const [quantItens, setQuantItens] = useState(10)
+  const [quantItens, setQuantItens] = useState(25)
   useEffect(() => {
     getBateria()
     // eslint-disable-next-line
@@ -41,7 +41,7 @@ function Index() {
         baterias = await baterias.sort((a, b) => { return new Date(b.lancado) - new Date(a.lancado) })
         setRelatorio(baterias)
         mostrarMais(baterias);
-
+        
         return data.data
       })
       .catch(err => console.error(err));
@@ -55,7 +55,7 @@ function Index() {
         await array.push(el)
     })
     setLista(array);
-    setQuantItens(quantItens + 10)
+    setQuantItens(quantItens + 25)
   }
   if (lista.length <= 0)
     return <Carregando/>

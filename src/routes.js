@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, HashRouter, Route, Switch } from 'react-router-dom';
+import {  HashRouter, Route, Switch } from 'react-router-dom';
 
 import Estoque from './screens/Estoque/index'
 import Bateria from './screens/Bateria/index'
@@ -18,7 +18,7 @@ import Lottie from 'react-lottie';
 
 
 export default function Routes() {
-  
+
   const [time, setTime] = useState(false)
   const defaultOptions = {
     loop: false,
@@ -29,7 +29,7 @@ export default function Routes() {
     }
   };
   useEffect(() => {
-    
+
     setTimeout(() => {
       setTime(true)
     }, 2500)
@@ -67,8 +67,9 @@ export default function Routes() {
     //     </Menu>
     //   </Switch>
     // </BrowserRouter>
-    <HashRouter  basename="/">
+    <HashRouter basename="/">
       <Switch>
+        <Route path="/ImprimirEstoque" component={ImprimirEstoque} />
         <Menu>
           <Route path="/" exact component={Estoque} />
           <Route path="/Bateria" component={Bateria} />
@@ -76,7 +77,7 @@ export default function Routes() {
           <Route path="/InfoSucata/:funcao/:id" component={InfoSucata} />
           <Route path="/InfoBateria/:funcao/:id" component={InfoBateria} />
           <Route path="/GetByBateria/:id" component={GetByBateria} />
-          <Route path="/ImprimirEstoque" component={ImprimirEstoque} />
+
           <Route path="/Logs" component={Logs} />
           <Route path="/InfoSucataLog/:id" component={InfoSucataLog} />
           <Route path="/InfoBateriaLog/:id" component={InfoBateriaLog} />

@@ -164,7 +164,11 @@ export function ExtratoSucata(props) {
                 <FaMusic size={16} fill={"#aaa"} />
                 : null
             }
-
+            {
+              props.dados.observacao ?
+                <FaCommentAlt size={16} fill={"#aaa"} />
+                : null
+            }
           </div>
           <p>Última atualização <b>{moment(props.dados.atualizacao).format('DD/MM/YYYY HH:mm')}</b> por <b>{props.dados.update_nome}</b></p>
         </div>
@@ -173,6 +177,7 @@ export function ExtratoSucata(props) {
   )
 }
 export function ExtratoEstoque(props) {
+
   return (
     <Extrato
       type={'und'}
@@ -209,6 +214,11 @@ export function ExtratoEstoque(props) {
                 <FaMusic size={16} fill={"#aaa"} />
                 : null
             }
+            {
+              props.dados.observacao || props.dados.dados.observacoes ?
+                <FaCommentAlt size={16} fill={"#aaa"} />
+                : null
+            }
           </div>
           <p>Última atualização {moment(props.dados.atualizacao).format('DD/MM/YYYY HH:mm')} por <b>{props.dados.update_nome}</b></p>
         </div>
@@ -220,8 +230,8 @@ export function ExtratoEstoque(props) {
 export function Menu(props) {
   const location = useLocation();
   const [logar, setLogar] = useState(true)
-  const [usuario, setUsuario] = useState('controlador_estoque')
-  const [senha, setSenha] = useState('kondor987456')
+  const [usuario, setUsuario] = useState(localStorage.getItem('usuario') ? localStorage.getItem('usuario') : '')
+  const [senha, setSenha] = useState('')
   const [init, setInit] = useState(true)
   const [msg, setMsg] = useState('')
   const [disabled, setDisabled] = useState(false)
@@ -351,7 +361,7 @@ export function ItemLog(props) {
   const [color, setColor] = useState('red')
   const [rota, setRota] = useState('')
   useEffect(() => {
-    let msg =  props.dados.usuario.charAt(0).toUpperCase() + props.dados.usuario.slice(1)+" "
+    let msg = props.dados.usuario.charAt(0).toUpperCase() + props.dados.usuario.slice(1) + " "
     if (props.dados.classe === "bateria") {
       if (props.dados.funcao === "adicionar_entrada")
         msg += "ADICIONOU;" + props.dados.dados.dados.quantidade.reduce((ac, ar) => { return ac + parseInt(ar.quantidade) }, 0) + " baterias ao estoque;"
@@ -405,6 +415,16 @@ export function ItemLog(props) {
     }
     setMensagem(msg)
   }, [props.dados])
+
+  async function checkLog(){
+    await api.get('/?funcao=checkLog&id='+props.dados.id+'&token='+localStorage.getItem('token'))
+      .then(async (data) => {
+        console.log(data)
+        return data.data
+      })
+      .catch(err => console.error(err));
+
+  }
   return (
     <>
       {
@@ -416,6 +436,7 @@ export function ItemLog(props) {
           : null
       }
       <Link to={rota}
+        onClick={()=>checkLog('ss')}
         className="logContainer"
         style={{ borderLeftColor: color }}>
         <strong style={{ color: '#aaa' }}>#{props.dados.classe}</strong>

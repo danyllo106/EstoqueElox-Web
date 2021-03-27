@@ -75,10 +75,9 @@ const Index = () => {
   if (produtos.length <= 0)
     return <Carregando />
   return (
-    <div className="containerImprmirPrint" >
       <PDFViewer style={styles.page}>
         <Document>
-          <Page size="A4" style={{ margin: 35 }}>
+          <Page object-fit="cover" size="A4" style={{margin:35}}>
             <Text style={{ fontSize: 10, textAlign:'right',marginRight:80 }}>Estoque realizado em {moment().format('DD/MM/YYYY HH:mm')}</Text>
             <View style={{ justifyContent: "center", alignItems: 'center', display: 'flex', marginRight: 80,marginBottom:20 }}>
               <Image
@@ -125,7 +124,6 @@ const Index = () => {
           </Page>
         </Document>
       </PDFViewer>
-    </div>
   )
 };
 
@@ -143,11 +141,12 @@ const styles = {
     borderBottomCollor: 'black'
   },
   page: {
-    display: 'flex',
     height: '100%',
-    overflow: 'hidden',
     width: '100%',
-    position: "absolute",
-    right: 0
+    position:'fixed',
+    top:0,
+    bottom:0,
+    left:0,
+    right:10
   }
 };

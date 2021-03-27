@@ -33,6 +33,7 @@
   justify-content: space-between;
   align-items: center;
   display: flex;
+  cursor: pointer;
 }
 
 .imprimir:hover {
@@ -60,4 +61,84 @@
     left: 0px;
     bottom: 60px;
   }
+}
+
+/* IMPRIMIR */
+.page{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width: 90%;
+  margin-bottom: 2px;
+  border-bottom: 1px solid black;
+}
+.header p{
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.dataEstoque {
+  font-size: 14px;
+  text-align: right;
+  position: absolute;
+  top:10px;
+  right: 80px;
+}
+
+.containerImg {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  margin-top: 15px;
+  margin-bottom: 20px
+}
+.rowProduto{
+  justify-content: flex-start;
+  display: flex;
+}
+.rowProduto p{
+  font-size: 22px;
+  text-align: left;
+}
+@media all {
+  .page-break {
+    display: none;
+  }
+}
+
+@media print {
+  html, body {
+    height: initial !important;
+    overflow: initial !important;
+    -webkit-print-color-adjust: exact;
+  }
+}
+
+@media print {
+  .page-break {
+    margin-top: 0px;
+    display: block;
+    page-break-after: auto;
+  }
+}
+
+@page {
+  size: auto;
+  margin-top: 15mm;
+  margin-bottom: 20mm;
+}
+.total{
+  text-align: right;
+  width:100%;
+  font-size:22px;
+  font-weight:bold;
+  margin-right: 70px
 }
