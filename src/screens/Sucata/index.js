@@ -17,7 +17,7 @@ function Index() {
           element.valor = element.valor * -1
           dados.push(element)
         });
-        dados = await dados.sort((a, b) => { return new Date(b.data) - new Date(a.data) })
+        dados = await dados.sort((a, b) => { return new Date(b.data.replace(' ','T')) - new Date(a.data.replace(' ','T')) })
         setRelatorio(dados)
         mostrarMais(dados);
         return data.data

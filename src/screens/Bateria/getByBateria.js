@@ -56,7 +56,7 @@ function Index() {
             })
           }
         });
-        baterias = await baterias.sort((a, b) => { return new Date(b.lancado) - new Date(a.lancado) })
+        baterias = await baterias.sort((a, b) => { return new Date(b.lancado.replace(' ','T')) - new Date(a.lancado.replace(' ','T')) })
         setRelatorio(baterias)
         mostrarMais(baterias);
 
