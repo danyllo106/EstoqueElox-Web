@@ -102,10 +102,10 @@ export function Extrato(props) {
   return (
     <div className="borderContainerExtrato" >
       {
-        props.index === 0 || (new Date(props.dados.data).getDate() !== new Date(props.relatorio[props.index - 1].data).getDate()) ?
+        props.index === 0 || (new Date(props.dados.data.replace(' ','T')).getDate() !== new Date(props.relatorio[props.index - 1].data.replace(' ','T')).getDate()) ?
           <div className="valorExtrato">
             <p>{moment(props.dados.data).format('DD/MM')}</p>
-            <p>{parseFloat(props.relatorio.reduce((ac, array) => { return new Date(array.data) <= new Date(props.dados.data) ? ac + parseFloat(array.valor) : ac }, 0)).toLocaleString('pt-BR', { currency: 'BRL' })} {props.type}</p>
+            <p>{parseFloat(props.relatorio.reduce((ac, array) => { return new Date(array.data.replace(' ','T')) <= new Date(props.dados.data.replace(' ','T')) ? ac + parseFloat(array.valor) : ac }, 0)).toLocaleString('pt-BR', { currency: 'BRL' })} {props.type}</p>
           </div>
           : null
       }
@@ -428,7 +428,7 @@ export function ItemLog(props) {
   return (
     <>
       {
-        props.index === 0 || new Date(props.logs[props.index - 1].data).getDate() !== new Date(props.logs[props.index].data).getDate() ?
+        props.index === 0 || new Date(props.logs[props.index - 1].data.replace(' ','T')).getDate() !== new Date(props.logs[props.index].data.replace(' ','T')).getDate() ?
           <div className="containerDateLogs">
             <p>{moment(props.dados.data).format("DD/MM")}</p>
           </div>
