@@ -6,6 +6,7 @@ import { FaPrint } from 'react-icons/fa';
 import logo from '../../assets/logoElox.png'
 import moment from 'moment'
 import { useReactToPrint } from 'react-to-print';
+import PullToRefresh from 'react-simple-pull-to-refresh';
 class ComponentToPrint extends React.PureComponent {
 
   render() {
@@ -76,7 +77,10 @@ function Index() {
     getSucata()
 
   }, [])
-
+  const updateDatas = async () => {
+    getProdutos()
+    getSucata()
+  }
   const getProdutos = async () => {
     let produtos = []
     await api.get('/?funcao=getprodutos&token=' + localStorage.getItem('token'))
@@ -172,53 +176,54 @@ function Index() {
     return <Carregando />
 
   return (
+    <PullToRefresh onRefresh={updateDatas}>
+      <div style={{ padding: 10 }}>
 
-    <div style={{ padding: 10 }}>
-
-      <input
-        placeholder={"Pesquisar... Ex: 22MPD; 60AH; KONDOR; "}
-        onChange={(text) => {
-          setPesquisarValue(text.target.value)
-          pesquisar(text.target.value)
-        }}
-        className="pesquisar" />
-      <div className="containerImprimir">
-        <div>
-          <h3 style={{ color: '#aaa' }}>Estoque</h3>
-          <h3 style={{ color: '#aaa' }}><b>Bateria:</b> {produtos.reduce((ac, arr) => { return ac + arr.quantidade }, 0)}und</h3>
-          <h3 style={{ color: '#aaa' }}><b>Sucata:</b> {peso.toLocaleString('pt-BR', { currency: 'BRL' })}Kg</h3>
-        </div>
-        <div className="imprimir" onClick={handlePrint}>
-          <FaPrint fill={'#3498db'} />
-           Imprimir Estoque
+        <input
+          placeholder={"Pesquisar... Ex: 22MPD; 60AH; KONDOR; "}
+          onChange={(text) => {
+            setPesquisarValue(text.target.value)
+            pesquisar(text.target.value)
+          }}
+          className="pesquisar" />
+        <div className="containerImprimir">
+          <div>
+            <h3 style={{ color: '#aaa' }}>Estoque</h3>
+            <h3 style={{ color: '#aaa' }}><b>Bateria:</b> {produtos.reduce((ac, arr) => { return ac + arr.quantidade }, 0)}und</h3>
+            <h3 style={{ color: '#aaa' }}><b>Sucata:</b> {peso.toLocaleString('pt-BR', { currency: 'BRL' })}Kg</h3>
           </div>
-        <div style={{ display: 'none' }}>
-          <ComponentToPrint produtos={produtosTemp} ref={componentRef} />
-        </div>
+          <div className="imprimir" onClick={handlePrint}>
+            <FaPrint fill={'#3498db'} />
+            Imprimir Estoque
+          </div>
+          <div style={{ display: 'none' }}>
+            <ComponentToPrint produtos={produtosTemp} ref={componentRef} />
+          </div>
 
-        {/* <Link to={'./ImprimirEstoque'}
+          {/* <Link to={'./ImprimirEstoque'}
           target='_blank'
           className="imprimir" >
           <FaPrint fill={'#3498db'} />
            Imprimir Estoque
       </Link> */}
+        </div>
+
+
+        {
+          produtosTemp.map((el) =>
+            <ContainerItem key={el.id} id={el.id} dados={el} />
+          )
+        }
+        {
+          produtosTemp.length === 0 ?
+            <div className="nenhum">
+              <p style={{ color: '#aaa' }}>Nenhum produto encontrado</p>
+            </div>
+            : null
+        }
+
       </div>
-
-
-      {
-        produtosTemp.map((el) =>
-          <ContainerItem key={el.id} id={el.id} dados={el} />
-        )
-      }
-      {
-        produtosTemp.length === 0 ?
-          <div className="nenhum">
-            <p style={{ color: '#aaa' }}>Nenhum produto encontrado</p>
-          </div>
-          : null
-      }
-
-    </div>
+    </PullToRefresh>
   );
 }
 

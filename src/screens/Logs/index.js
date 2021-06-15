@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import api from '../../utils/api'
 import { ButtonMostrarMais, Carregando, ItemLog } from '../../utils/componentes';
+import PullToRefresh from 'react-simple-pull-to-refresh';
 function Index() {
   const [result, setResult] = useState([])
   const [logs, setLogs] = useState([])
@@ -52,7 +53,7 @@ function Index() {
   if (logs.length === 0)
     return <Carregando />
   return (
-    <div >
+    <PullToRefresh onRefresh={getLogs}>
       <h3 style={{ color: '#aaa', marginLeft: 10 }}>Logs</h3>
       {
         logs.map((e, index) =>
@@ -65,7 +66,7 @@ function Index() {
       }
       <ButtonMostrarMais onClick={() => verMais()} />
 
-    </div>
+    </PullToRefresh>
   );
 }
 

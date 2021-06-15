@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ButtonMostrarMais, Carregando, ExtratoEstoque } from '../../utils/componentes'
 import api from '../../utils/api'
+import PullToRefresh from 'react-simple-pull-to-refresh';
 function Index() {
   const [relatorio, setRelatorio] = useState([])
   const [lista, setLista] = useState([]);
@@ -60,7 +61,7 @@ function Index() {
   if (lista.length <= 0)
     return <Carregando/>
   return (
-    <div >
+    <PullToRefresh onRefresh={getBateria}>
       <h3 style={{ color: '#aaa',marginLeft:10 }}>Bateria</h3>
       {
         lista.map((element, index) =>
@@ -75,7 +76,7 @@ function Index() {
       <ButtonMostrarMais
         onClick={() => mostrarMais()}
       />
-    </div>
+    </PullToRefresh>
   );
 }
 
