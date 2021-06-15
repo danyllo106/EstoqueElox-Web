@@ -1,24 +1,24 @@
 {
   "files": {
     "main.css": "./static/css/main.7145671e.chunk.css",
-    "main.js": "./static/js/main.e07c47b0.chunk.js",
-    "main.js.map": "./static/js/main.e07c47b0.chunk.js.map",
+    "main.js": "./static/js/main.b35674d5.chunk.js",
+    "main.js.map": "./static/js/main.b35674d5.chunk.js.map",
     "runtime-main.js": "./static/js/runtime-main.ae1c6e6c.js",
     "runtime-main.js.map": "./static/js/runtime-main.ae1c6e6c.js.map",
     "static/css/2.3e35cbb6.chunk.css": "./static/css/2.3e35cbb6.chunk.css",
-    "static/js/2.a0af49f8.chunk.js": "./static/js/2.a0af49f8.chunk.js",
-    "static/js/2.a0af49f8.chunk.js.map": "./static/js/2.a0af49f8.chunk.js.map",
+    "static/js/2.1c4c120b.chunk.js": "./static/js/2.1c4c120b.chunk.js",
+    "static/js/2.1c4c120b.chunk.js.map": "./static/js/2.1c4c120b.chunk.js.map",
     "index.html": "./index.html",
     "static/css/2.3e35cbb6.chunk.css.map": "./static/css/2.3e35cbb6.chunk.css.map",
     "static/css/main.7145671e.chunk.css.map": "./static/css/main.7145671e.chunk.css.map",
-    "static/js/2.a0af49f8.chunk.js.LICENSE.txt": "./static/js/2.a0af49f8.chunk.js.LICENSE.txt",
+    "static/js/2.1c4c120b.chunk.js.LICENSE.txt": "./static/js/2.1c4c120b.chunk.js.LICENSE.txt",
     "static/media/logoElox.847e219d.png": "./static/media/logoElox.847e219d.png"
   },
   "entrypoints": [
     "static/js/runtime-main.ae1c6e6c.js",
     "static/css/2.3e35cbb6.chunk.css",
-    "static/js/2.a0af49f8.chunk.js",
+    "static/js/2.1c4c120b.chunk.js",
     "static/css/main.7145671e.chunk.css",
-    "static/js/main.e07c47b0.chunk.js"
+    "static/js/main.b35674d5.chunk.js"
   ]
 }
