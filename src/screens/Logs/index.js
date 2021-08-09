@@ -1,4 +1,5 @@
 import moment from 'moment';
+import 'moment/locale/pt-br';
 import React, { useEffect, useState } from 'react';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 
@@ -12,7 +13,9 @@ function Index() {
   const [loading, setLoading] = useState(false)
   const [subLoading, setSubLoading] = useState(false)
   const [dataSelecionada, setDataSelecionada] = useState()
+  moment.locale('pt-br');
   useEffect(() => {
+    moment.locale('pt-br');
     getLogsByDate('2021-08-06')
     // eslint-disable-next-line
   }, [])

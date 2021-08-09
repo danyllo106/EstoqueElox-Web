@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Carregando, ExtratoEstoque, lastDays } from '../../utils/componentes'
 import api from '../../utils/api'
 import moment from 'moment';
+import 'moment/locale/pt-br';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 function Index() {
   const dates = lastDays()
@@ -11,8 +12,9 @@ function Index() {
 
   const [loading, setLoading] = useState(false)
   const [subLoading, setSubLoading] = useState(false)
-
+  moment.locale('pt-br');
   useEffect(() => {
+    moment.locale('pt-br');
     getBateriaByDate(new Date())
     // eslint-disable-next-line
   }, [])

@@ -3,6 +3,7 @@ import {  Carregando, ExtratoEstoque, BackButton, lastDays } from '../../utils/c
 import api from '../../utils/api'
 import { useParams } from 'react-router';
 import moment from 'moment';
+import 'moment/locale/pt-br';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 function Index() {
   const dates = lastDays()
@@ -17,7 +18,9 @@ function Index() {
   const [loading, setLoading] = useState(false)
   const [subLoading, setSubLoading] = useState(false)
   let { id } = useParams()
+  moment.locale('pt-br');
   useEffect(() => {
+    moment.locale('pt-br');
     getEstoqueByDateAndId(new Date())
     // eslint-disable-next-line
   }, [id])

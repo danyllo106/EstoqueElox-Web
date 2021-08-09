@@ -4,7 +4,7 @@ import api from '../../utils/api'
 import 'react-day-picker/lib/style.css';
 import { FaRegCalendarAlt } from "react-icons/fa";
 import moment from 'moment';
-
+import 'moment/locale/pt-br';
 function Index() {
   const dates = lastDays()
   const [valor, setValor] = useState(0)
@@ -13,9 +13,10 @@ function Index() {
 
   const [loading, setLoading] = useState(false)
   const [subLoading, setSubLoading] = useState(false)
-
+  moment.locale('pt-br');
 
   useEffect(() => {
+    moment.locale('pt-br');
     setLoading(true)
     getSucataByDate(new Date())
     // eslint-disable-next-line
