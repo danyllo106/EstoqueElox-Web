@@ -11,6 +11,15 @@ import jwt_decode from "jwt-decode";
 function selectColor(value) {
   return value >= 0 ? '#2ecc71' : '#e74c3c'
 }
+
+export function lastDays() {
+  const getDaysArray = function (s, e) { for (var a = [], d = new Date(s); d <= e; d.setDate(d.getDate() + 1)) { a.push(new Date(d)); } return a; };
+  const daylist = getDaysArray(new Date(new Date().setDate(new Date().getDate() - 5)), new Date());
+  const list = daylist.reverse()
+  return list
+}
+
+
 export function BackButton(props) {
   let history = useHistory()
   return (
@@ -104,8 +113,8 @@ export function Extrato(props) {
       {
         props.index === 0 || (new Date(props.dados.data.replace(' ','T')).getDate() !== new Date(props.relatorio[props.index - 1].data.replace(' ','T')).getDate()) ?
           <div className="valorExtrato">
-            <p>{moment(props.dados.data).format('DD/MM')}</p>
-            <p>{parseFloat(props.relatorio.reduce((ac, array) => { return new Date(array.data.replace(' ','T')) <= new Date(props.dados.data.replace(' ','T')) ? ac + parseFloat(array.valor) : ac }, 0)).toLocaleString('pt-BR', { currency: 'BRL' })} {props.type}</p>
+            <p style={{fontWeight:'bold'}}>TOTAL</p>
+            <p>{parseFloat(props.valor).toLocaleString('pt-BR', { currency: 'BRL' })} {props.type}</p>
           </div>
           : null
       }

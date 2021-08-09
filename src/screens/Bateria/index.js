@@ -1,20 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { ButtonMostrarMais, Carregando, ExtratoEstoque } from '../../utils/componentes'
+import { Carregando, ExtratoEstoque, lastDays } from '../../utils/componentes'
 import api from '../../utils/api'
-import PullToRefresh from 'react-simple-pull-to-refresh';
+import moment from 'moment';
+import { FaRegCalendarAlt } from 'react-icons/fa';
 function Index() {
-  const [relatorio, setRelatorio] = useState([])
+  const dates = lastDays()
   const [lista, setLista] = useState([]);
-  const [quantItens, setQuantItens] = useState(25)
+  const [dataSelecionada, setDataSelecionada] = useState()
+  const [valor, setValor] = useState(0)
+
+  const [loading, setLoading] = useState(false)
+  const [subLoading, setSubLoading] = useState(false)
+
   useEffect(() => {
-    getBateria()
+    getBateriaByDate(new Date())
     // eslint-disable-next-line
   }, [])
-  const getBateria = async () => {
-    await api.get('/?funcao=estoque&token='+localStorage.getItem('token'))
+  const getBateriaByDate = async (data) => {
+    setSubLoading(true)
+    await api.get('/?funcao=getEstoqueByDate&data=' + moment(data).format('YYYY-MM-DD') + '&token=' + localStorage.getItem('token'))
       .then(async (data) => {
 
         let baterias = []
+        setValor(data.data.sum)
 
         await data.data.saida.forEach((element) => {
           element.dados = JSON.parse(element.dados)
@@ -39,44 +47,76 @@ function Index() {
             ...element
           })
         });
-        baterias = await baterias.sort((a, b) => { return new Date(b.lancado.replace(' ','T')) - new Date(a.lancado.replace(' ','T')) })
-        setRelatorio(baterias)
-        mostrarMais(baterias);
-        
+
+        baterias = await baterias.sort((a, b) => { return new Date(b.lancado.replace(' ', 'T')) - new Date(a.lancado.replace(' ', 'T')) })
+        setLista(baterias)
+        setLoading(false)
+        setSubLoading(false)
         return data.data
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        setLoading(false)
+        setSubLoading(false)
+        console.error(err)
+      });
 
   }
-  function mostrarMais(lista = relatorio) {
 
-    let array = []
-    lista.forEach(async (el, index) => {
-      if (index < quantItens)
-        await array.push(el)
-    })
-    setLista(array);
-    setQuantItens(quantItens + 25)
-  }
-  if (lista.length <= 0)
-    return <Carregando/>
+  if (loading)
+    return <Carregando />
   return (
-    <PullToRefresh onRefresh={getBateria}>
-      <h3 style={{ color: '#aaa',marginLeft:10 }}>Bateria</h3>
-      {
-        lista.map((element, index) =>
-          <ExtratoEstoque
-            key={index}
-            index={index}
-            relatorio={relatorio}
-            dados={element}
+    <div>
+      <h3 style={{ color: '#aaa', marginLeft: 10 }}>Bateria</h3>
+
+      <div className="itemDataContainer">
+        <div id='selectDate'>
+          <FaRegCalendarAlt
+            size={26}
+            className="itemDataIcon"
           />
-        )
+          <input type='date'
+            onChange={(date) => {
+              setDataSelecionada(date.target.value)
+              getBateriaByDate(date.target.value)
+            }}
+          />
+
+        </div>
+        {
+          dates.map((item) => (
+            <div
+              onClick={() => {
+                setDataSelecionada(item)
+                getBateriaByDate(item)
+              }}
+              className={moment(dataSelecionada).format('YYYY-MM-DD') === moment(item).format('YYYY-MM-DD') ? "itemDataSelected" : "itemData"}
+              key={item}>
+              <p>{new Date(item).getDate()}</p>
+              <p>{moment(item).format('MMMM').charAt(0).toUpperCase() + moment(item).format('MMMM').slice(1)}</p>
+            </div>
+          ))
+        }
+      </div>
+      {
+        subLoading ?
+          <p className='loadingMsg'>Carregando...</p>
+          :
+          lista.length > 0 ?
+            lista.map((element, index) =>
+              <ExtratoEstoque
+                key={index}
+                index={index}
+                relatorio={lista}
+                dados={element}
+                valor={valor}
+              />
+            )
+            :
+            <p className='loadingMsg'>Nenhum lançamento realizado no dia</p>
+
       }
-      <ButtonMostrarMais
-        onClick={() => mostrarMais()}
-      />
-    </PullToRefresh>
+
+    </div>
   );
 }
 

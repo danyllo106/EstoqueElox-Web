@@ -1,22 +1,28 @@
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
+import { FaRegCalendarAlt } from 'react-icons/fa';
 
 import api from '../../utils/api'
-import { ButtonMostrarMais, Carregando, ItemLog } from '../../utils/componentes';
-import PullToRefresh from 'react-simple-pull-to-refresh';
+import { Carregando, ItemLog, lastDays } from '../../utils/componentes';
 function Index() {
-  const [result, setResult] = useState([])
+  const dates = lastDays()
+
   const [logs, setLogs] = useState([])
-  const [max, setMax] = useState(25)
+
+  const [loading, setLoading] = useState(false)
+  const [subLoading, setSubLoading] = useState(false)
+  const [dataSelecionada, setDataSelecionada] = useState()
   useEffect(() => {
-    getLogs() 
+    getLogsByDate('2021-08-06')
     // eslint-disable-next-line
   }, [])
-  const getLogs = async () => {
+  const getLogsByDate = async (data) => {
     let logs = []
-    
-    await api.get('/?funcao=logs&token='+localStorage.getItem('token'))
+    setSubLoading(true)
+
+    await api.get('/?funcao=getLogsByDate&data=' + moment(data).format('YYYY-MM-DD') + '&token=' + localStorage.getItem('token'))
       .then(async (data) => {
-        
+
         data.data.forEach((element, index) => {
           if (element.classe === "bateria") {
             element.dados = JSON.parse(element.dados)
@@ -39,34 +45,71 @@ function Index() {
 
           }
         });
-        setResult(logs)
-        setLogs(logs.filter((el, index) => { return index <= max ? el : null }))
+        setLogs(logs)
+        setLoading(false)
+        setSubLoading(false)
         return data.data
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        setLoading(false)
+        setSubLoading(false)
+        console.error(err)
+      });
 
   }
-  function verMais() {
-    setLogs(result.filter((el, index) => { return index <= max + 25 ? el : null }))
-    setMax(max + 25)
-  }
-  if (logs.length === 0)
+  
+
+  if (loading)
     return <Carregando />
   return (
-    <PullToRefresh onRefresh={getLogs}>
+    <div>
       <h3 style={{ color: '#aaa', marginLeft: 10 }}>Logs</h3>
-      {
-        logs.map((e, index) =>
-          <ItemLog key={index}
-            index={index}
-            logs={result}
-            dados={e}
+      <div className="itemDataContainer">
+        <div id='selectDate'>
+          <FaRegCalendarAlt
+            size={26}
+            className="itemDataIcon"
           />
-        )
-      }
-      <ButtonMostrarMais onClick={() => verMais()} />
+          <input type='date'
+            onChange={(date) => {
+              setDataSelecionada(date.target.value)
+              getLogsByDate(date.target.value)
+            }}
+          />
 
-    </PullToRefresh>
+        </div>
+        {
+          dates.map((item) => (
+            <div
+              onClick={() => {
+                setDataSelecionada(item)
+                getLogsByDate(item)
+              }}
+              className={moment(dataSelecionada).format('YYYY-MM-DD') === moment(item).format('YYYY-MM-DD') ? "itemDataSelected" : "itemData"}
+              key={item}>
+              <p>{new Date(item).getDate()}</p>
+              <p>{moment(item).format('MMMM').charAt(0).toUpperCase() + moment(item).format('MMMM').slice(1)}</p>
+            </div>
+          ))
+        }
+      </div>
+      {
+        subLoading ?
+          <p className='loadingMsg'>Carregando...</p>
+          :
+          logs.length > 0 ?
+            logs.map((e, index) =>
+              <ItemLog key={index}
+                index={index}
+                logs={logs}
+                dados={e}
+              />
+            )
+            :
+            <p className='loadingMsg'>Nenhum lançamento realizado no dia</p>
+      }
+
+    </div>
   );
 }
 
