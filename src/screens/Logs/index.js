@@ -16,7 +16,7 @@ function Index() {
   moment.locale('pt-br');
   useEffect(() => {
     moment.locale('pt-br');
-    getLogsByDate('2021-08-06')
+    getLogsByDate(new Date())
     // eslint-disable-next-line
   }, [])
   const getLogsByDate = async (data) => {
