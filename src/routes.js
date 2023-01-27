@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {  HashRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter,  Route, Routes as Switch } from 'react-router-dom';
 
 import Estoque from './screens/Estoque/index'
 import Bateria from './screens/Bateria/index'
@@ -31,7 +31,7 @@ export default function Routes() {
 
     setTimeout(() => {
       setTime(true)
-    }, 2500)
+    }, 1500)
   }, [])
   if (!time)
     return (
@@ -66,21 +66,21 @@ export default function Routes() {
     //     </Menu>
     //   </Switch>
     // </BrowserRouter>
-    <HashRouter basename="/">
-      <Switch>
-        <Menu>
-          <Route path="/" exact component={Estoque} />
-          <Route path="/Bateria" component={Bateria} />
-          <Route path="/Sucata" component={Sucata} />
-          <Route path="/InfoSucata/:funcao/:id" component={InfoSucata} />
-          <Route path="/InfoBateria/:funcao/:id" component={InfoBateria} />
-          <Route path="/GetByBateria/:id" component={GetByBateria} />
+    <BrowserRouter basename="/">
+      <Menu>
+        <Switch>
+          <Route path="/" exact element={<Estoque />} />
+          <Route path="/Bateria/:date" element={<Bateria />} />
+          <Route path="/Sucata/:date" element={<Sucata />} />
+          <Route path="/InfoSucata/:funcao/:id" element={<InfoSucata />} />
+          <Route path="/InfoBateria/:funcao/:id" element={<InfoBateria />} />
+          <Route path="/GetByBateria/:id/:date" element={<GetByBateria />} />
 
-          <Route path="/Logs" component={Logs} />
-          <Route path="/InfoSucataLog/:id" component={InfoSucataLog} />
-          <Route path="/InfoBateriaLog/:id" component={InfoBateriaLog} />
-        </Menu>
-      </Switch>
-    </HashRouter>
+          <Route path="/Logs/:date" element={<Logs />} />
+          <Route path="/InfoSucataLog/:id" element={<InfoSucataLog />} />
+          <Route path="/InfoBateriaLog/:id" element={<InfoBateriaLog />} />
+        </Switch>
+      </Menu>
+    </BrowserRouter>
   )
 }

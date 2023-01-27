@@ -102,12 +102,12 @@ img {
   
 }
 #selectDate input{
-  background-color: transparent;
+  /* background-color: transparent;
   border:none;
   font-size: 18px;
   color: #e74c3c;
   padding-top: 50px;
-  margin-top: -50px;
+  margin-top: -50px; */
 }
 #selectDate{
   display: flex;
@@ -125,7 +125,7 @@ img {
   color: #e74c3c;
 }
 .loadingMsg{
-  margin-top: 100px;
+  margin-top: 10px;
   font-size: 22px;
   text-align: center;
 }

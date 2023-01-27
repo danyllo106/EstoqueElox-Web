@@ -3,7 +3,7 @@ import './componentesStyles.css'
 import { useLocation } from 'react-router-dom'
 import moment from 'moment'
 import { FaBox, FaCarBattery, FaCaretLeft, FaCheck, FaCheckDouble, FaCommentAlt, FaDolly, FaImage, FaMinus, FaMusic, FaPlus, FaTimes } from "react-icons/fa";
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Lottie from 'react-lottie'
 import api from './api'
 import logo from '../assets/logoElox.png'
@@ -19,12 +19,24 @@ export function lastDays() {
   const list = daylist.reverse()
   return list
 }
+export function lastMonths() {
+  moment.locale('pt-br');
+
+  const getDaysArray = function (s, e) {
+    for (var a = [], d = new Date(s); d <= e; d.setMonth(d.getMonth() + 1)) {
+      a.push(new Date(d));
+    } return a;
+  };
+  const daylist = getDaysArray(new Date(new Date().setMonth(new Date().getMonth() - 5)), new Date());
+  const list = daylist.reverse()
+  return list
+}
 
 
 export function BackButton(props) {
-  let history = useHistory()
+  let history = useNavigate()
   return (
-    <div className="containerBackButton" onClick={() => history.goBack()}>
+    <div className="containerBackButton" onClick={() => history(-1)}>
       <FaCaretLeft size={28} fill={'#aaa'} />
       <p>Voltar</p>
     </div>
@@ -62,7 +74,7 @@ export function ContainerItem(props) {
     <div>
       {
         props.id ?
-          <Link className="containerItem" to={'./GetByBateria/' + props.id}>
+          <Link className="containerItem" to={'/GetByBateria/' + props.id+"/"+moment(new Date()).format('YYYY-MM-DD')}>
             <table>
               <thead>
                 <tr>
@@ -112,9 +124,9 @@ export function Extrato(props) {
   return (
     <div className="borderContainerExtrato" >
       {
-        props.index === 0 || (new Date(props.dados.data.replace(' ','T')).getDate() !== new Date(props.relatorio[props.index - 1].data.replace(' ','T')).getDate()) ?
+        props.index === 0 || (new Date(props.dados.data.replace(' ', 'T')).getDate() !== new Date(props.relatorio[props.index - 1].data.replace(' ', 'T')).getDate()) ?
           <div className="valorExtrato">
-            <p style={{fontWeight:'bold'}}>TOTAL</p>
+            <p style={{ fontWeight: 'bold' }}>TOTAL</p>
             <p>{parseFloat(props.valor).toLocaleString('pt-BR', { currency: 'BRL' })} {props.type}</p>
           </div>
           : null
@@ -139,101 +151,77 @@ export function Extrato(props) {
 export function ExtratoSucata(props) {
 
   return (
-    <Extrato
-      type={'kg'}
-      {...props}
-    >
-      <Link className="containerExtratoSucata" to={`/InfoSucata/${props.dados.valor > 0 ? 'getEntradaSucata' : 'getSaidaSucata'}/${props.dados.id}`}>
-        <table >
-          <thead>
-            <tr>
-              <td colSpan="2" className="dateHeaderExtratoSucata">{moment(props.dados.data).format('DD/MM/YYYY HH:mm')} por {props.dados.create_nome}</td>
-            </tr>
-            <tr>
-              <th>Descrição</th>
-              <th style={{ textAlign: 'end' }}>Peso</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="infoExtratoSucata">
-              <td>{props.dados.valor > 0 ? 'Entrada' : 'Saída'}</td>
-              <td style={{ color: selectColor(props.dados.valor), textAlign: 'end' }}>{parseFloat(props.dados.valor).toLocaleString('pt-BR', { currency: 'BRL' })} kg</td>
-            </tr>
+    // <Extrato
+    //   type={'kg'}
+    //   {...props}
+    // >
+    <Link className="containerExtratoSucata" style={{ borderLeft: `5px solid ${selectColor(props.dados.valor)}` }} to={`/InfoSucata/${props.dados.valor > 0 ? 'getEntradaSucata' : 'getSaidaSucata'}/${props.dados.id}`}>
+      <table >
+        <thead>
+          <tr>
+            <td className="dateHeaderExtratoSucata">{moment(props.dados.data).format('DD/MM/YYYY HH:mm')} por {props.dados.create_nome}</td>
+            <td style={{ textAlign: 'end' }}>Peso</td>
+            <td style={{ textAlign: 'end' }}>Saldo</td>
+          </tr>
 
-          </tbody>
-        </table>
-        <div className="observacaoExtratoSucata">
-          <div>
-            {
-              props.dados.imagemobs ?
-                <FaImage size={16} fill={"#aaa"} />
-                : null
-            }
-            {
-              props.dados.audioobs ?
-                <FaMusic size={16} fill={"#aaa"} />
-                : null
-            }
-            {
-              props.dados.observacao ?
-                <FaCommentAlt size={16} fill={"#aaa"} />
-                : null
-            }
-          </div>
-          <p>Última atualização <b>{moment(props.dados.atualizacao).format('DD/MM/YYYY HH:mm')}</b> por <b>{props.dados.update_nome}</b></p>
-        </div>
-      </Link>
-    </Extrato>
+        </thead>
+        <tbody>
+          <tr className="infoExtratoSucata">
+            <td style={{ width: '60%' }}>{props.dados.valor > 0 ? 'Entrada' : 'Saída'}{props.dados.imagemobs && <FaImage size={16} fill={"#aaa"} />}{props.dados.audioobs && <FaMusic size={16} fill={"#aaa"} />}</td>
+            <td style={{ width: '20%', color: selectColor(props.dados.valor), textAlign: 'end' }}>{parseFloat(props.dados.valor).toLocaleString('pt-BR', { currency: 'BRL' })} kg</td>
+            <td style={{ width: '20%', color: selectColor(props.anterior), textAlign: 'end' }}>{parseFloat(props.anterior).toLocaleString('pt-BR', { currency: 'BRL' })} kg</td>
+          </tr>
+          {
+            props.dados.observacao &&
+            <tr>
+              <td colSpan={3} style={{ color: '#aaa' }}>{props.dados.observacao}</td>
+            </tr>
+          }
+          <tr>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </Link>
+
+    // </Extrato>
   )
 }
 export function ExtratoEstoque(props) {
 
   return (
-    <Extrato
-      type={'und'}
-      {...props}
-    >
-      <Link className="containerExtratoEstoque" to={`/InfoBateria/${props.dados.valor > 0 ? 'getEntradaBaterias' : 'getSaidaBaterias'}/${props.dados.id}`}>
-        <table >
-          <thead>
+    // <Extrato
+    //   type={'und'}
+    //   {...props}
+    // >
+    <Link className="containerExtratoSucata" style={{ borderLeft: `5px solid ${selectColor(props.dados.valor)}` }} to={`/InfoBateria/${props.dados.valor > 0 ? 'getEntradaBaterias' : 'getSaidaBaterias'}/${props.dados.id}`}>
+      <table >
+        <thead>
+          <tr>
+            <td className="dateHeaderExtratoSucata">{moment(props.dados.data).format('DD/MM/YYYY HH:mm')} por {props.dados.create_nome}</td>
+            <td style={{ textAlign: 'end' }}>Quant</td>
+            <td style={{ textAlign: 'end' }}>Total</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr className="infoExtratoSucata">
+            <td style={{ width: '60%',whiteSpace:'break-spaces' }}>{props.dados.nome}{props.dados.imagemobs && <FaImage size={16} fill={"#aaa"} />}{props.dados.audioobs && <FaMusic size={16} fill={"#aaa"} />}</td>
+            <td style={{ width: '20%', color: selectColor(props.dados.valor), textAlign: 'end' }}>{props.dados.valor}</td>
+            <td style={{ width: '20%', color: selectColor(props.anterior), textAlign: 'end' }}>{props.anterior}</td>
+          </tr>
+          {
+            props.dados.observacao &&
             <tr>
-              <td colSpan="2" className="dateHeaderExtratoEstoque">{moment(props.dados.lancado).format('DD/MM/YYYY HH:mm')} por {props.dados.create_nome}</td>
+              <td colSpan={3} style={{ color: '#aaa' }}>{props.dados.observacao}</td>
             </tr>
-            <tr>
-              <th>Descrição</th>
-              <th style={{ textAlign: 'end' }}>Quant</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="infoExtratoEstoque">
-              <td>{props.dados.nome}</td>
-              <td style={{ color: selectColor(props.dados.valor), textAlign: 'end' }}>{props.dados.valor}</td>
-            </tr>
-
-          </tbody>
-        </table>
-        <div className="observacaoExtratoEstoque">
-          <div>
-            {
-              props.dados.imagemobs ?
-                <FaImage size={16} fill={"#aaa"} />
-                : null
-            }
-            {
-              props.dados.audioobs ?
-                <FaMusic size={16} fill={"#aaa"} />
-                : null
-            }
-            {
-              props.dados.observacao || props.dados.dados.observacoes ?
-                <FaCommentAlt size={16} fill={"#aaa"} />
-                : null
-            }
-          </div>
-          <p>Última atualização {moment(props.dados.atualizacao).format('DD/MM/YYYY HH:mm')} por <b>{props.dados.update_nome}</b></p>
-        </div>
-      </Link>
-    </Extrato>
+          }
+          <tr>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </Link>
+    // </Extrato>
   )
 }
 
@@ -344,15 +332,15 @@ export function Menu(props) {
           <FaBox size={16} fill={"#aaa"} />
           <p>Estoque</p>
         </Link>
-        <Link to="/Bateria" className={location.pathname === "/Bateria" ? "selected" : null}>
+        <Link to={"/Bateria/"+moment(new Date()).format('YYYY-MM-DD')} className={location.pathname.includes("/Bateria") ? "selected" : null}>
           <FaCarBattery size={16} fill={"#aaa"} />
           <p>Bateria</p>
         </Link>
-        <Link to="/Sucata" className={location.pathname === "/Sucata" ? "selected" : null}>
+        <Link to={"/Sucata/"+moment(new Date()).format('YYYY-MM-DD')} className={location.pathname.includes("/Sucata") ? "selected" : null}>
           <FaDolly size={16} fill={"#aaa"} />
           <p>Sucata</p>
         </Link>
-        <Link to="/Logs" className={location.pathname === "/Logs" ? "selected" : null}>
+        <Link to={"Logs/"+moment(new Date()).format('YYYY-MM-DD')} className={location.pathname.includes("/Logs") ? "selected" : null}>
           <FaCommentAlt size={16} fill={"#aaa"} />
           <p>Logs</p>
         </Link>
@@ -405,31 +393,30 @@ export function ItemLog(props) {
     }
     if (props.dados.funcao.includes('adicionar'))
       if (props.dados.funcao.includes('entrada')) {
-        setRota(props.dados.classe === "bateria" ? './InfoBateria/getEntradaBaterias/' + props.dados.dados.id : './InfoSucata/getEntradaSucata/' + props.dados.dados.id)
+        setRota(props.dados.classe === "bateria" ? '/InfoBateria/getEntradaBaterias/' + props.dados.dados.id : '/InfoSucata/getEntradaSucata/' + props.dados.dados.id)
         setColor('#2ecc71')
       } else {
-        setRota(props.dados.classe === "bateria" ? './InfoBateria/getSaidaBaterias/' + props.dados.dados.id : './InfoSucata/getSaidaSucata/' + props.dados.dados.id)
+        setRota(props.dados.classe === "bateria" ? '/InfoBateria/getSaidaBaterias/' + props.dados.dados.id : '/InfoSucata/getSaidaSucata/' + props.dados.dados.id)
         setColor('#f39c12')
       }
     if (props.dados.funcao.includes('atualizar')) {
       setColor('#2980b9')
-      setRota(props.dados.classe === "bateria" ? './InfoBateriaLog/' + props.dados.id : './InfoSucataLog/' + props.dados.id)
+      setRota(props.dados.classe === "bateria" ? '/InfoBateriaLog/' + props.dados.id : '/InfoSucataLog/' + props.dados.id)
     }
     if (props.dados.funcao.includes('deletar')) {
       setColor('#e74c3c')
       if (props.dados.funcao.includes('entrada')) {
-        setRota(props.dados.classe === "bateria" ? './InfoBateria/getEntradaBaterias/' + props.dados.dados.id : './InfoSucata/getEntradaSucata/' + props.dados.dados.id)
+        setRota(props.dados.classe === "bateria" ? '/InfoBateria/getEntradaBaterias/' + props.dados.dados.id : '/InfoSucata/getEntradaSucata/' + props.dados.dados.id)
       } else {
-        setRota(props.dados.classe === "bateria" ? './InfoBateria/getSaidaBaterias/' + props.dados.dados.id : './InfoSucata/getSaidaSucata/' + props.dados.dados.id)
+        setRota(props.dados.classe === "bateria" ? '/InfoBateria/getSaidaBaterias/' + props.dados.dados.id : '/InfoSucata/getSaidaSucata/' + props.dados.dados.id)
       }
     }
     setMensagem(msg)
   }, [props.dados])
 
-  async function checkLog(){
-    await api.get('/?funcao=checkLog&id='+props.dados.id+'&token='+localStorage.getItem('token'))
+  async function checkLog() {
+    await api.get('/?funcao=checkLog&id=' + props.dados.id + '&token=' + localStorage.getItem('token'))
       .then(async (data) => {
-        console.log(data)
         return data.data
       })
       .catch(err => console.error(err));
@@ -438,15 +425,15 @@ export function ItemLog(props) {
   return (
     <>
       {
-        props.index === 0 || new Date(props.logs[props.index - 1].data.replace(' ','T')).getDate() !== new Date(props.logs[props.index].data.replace(' ','T')).getDate() ?
-          <div className="containerDateLogs">
-            <p>{moment(props.dados.data).format("DD/MM")}</p>
-          </div>
+        // props.index === 0 || new Date(props.logs[props.index - 1].data.replace(' ', 'T')).getDate() !== new Date(props.logs[props.index].data.replace(' ', 'T')).getDate() ?
+        //   <div className="containerDateLogs">
+        //     <p>{moment(props.dados.data).format("DD/MM")}</p>
+        //   </div>
 
-          : null
+        //   : null
       }
       <Link to={rota}
-        onClick={()=>checkLog('ss')}
+        onClick={() => checkLog('ss')}
         className="logContainer"
         style={{ borderLeftColor: color }}>
         <strong style={{ color: '#aaa' }}>#{props.dados.classe}</strong>

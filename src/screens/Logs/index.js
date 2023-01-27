@@ -2,12 +2,15 @@ import moment from 'moment';
 import 'moment/locale/pt-br';
 import React, { useEffect, useState } from 'react';
 import { FaRegCalendarAlt } from 'react-icons/fa';
+import DatePicker from 'react-datepicker'
 
 import api from '../../utils/api'
-import { Carregando, ItemLog, lastDays } from '../../utils/componentes';
+import { Carregando, ItemLog, lastMonths } from '../../utils/componentes';
+import { useNavigate, useParams } from 'react-router-dom';
 function Index() {
-  const dates = lastDays()
-
+  const months = lastMonths()
+  const params = useParams()
+  const navigation = useNavigate()
   const [logs, setLogs] = useState([])
 
   const [loading, setLoading] = useState(false)
@@ -16,14 +19,14 @@ function Index() {
   moment.locale('pt-br');
   useEffect(() => {
     moment.locale('pt-br');
-    getLogsByDate(new Date())
+    getLogsByDate(params.date ? params.date : new Date())
     // eslint-disable-next-line
-  }, [])
+  }, [params.date])
   const getLogsByDate = async (data) => {
     let logs = []
     setSubLoading(true)
 
-    await api.get('/?funcao=getLogsByDate&data=' + moment(data).format('YYYY-MM-DD') + '&token=' + localStorage.getItem('token'))
+    await api.get('/?funcao=getLogsByMonth&data=' + moment(data).format('YYYY-MM') + '&token=' + localStorage.getItem('token'))
       .then(async (data) => {
 
         data.data.forEach((element, index) => {
@@ -60,7 +63,7 @@ function Index() {
       });
 
   }
-  
+
 
   if (loading)
     return <Carregando />
@@ -73,43 +76,46 @@ function Index() {
             size={26}
             className="itemDataIcon"
           />
-          <input type='date'
+          <DatePicker
+            selected={dataSelecionada}
             onChange={(date) => {
-              setDataSelecionada(date.target.value)
-              getLogsByDate(date.target.value)
+              setDataSelecionada(date)
+              navigation('/Logs/' + moment(date).format('YYYY-MM-DD'))
             }}
+            dateFormat="MM/yyyy"
+            showMonthYearPicker
           />
 
         </div>
         {
-          dates.map((item) => (
+          months.map((item) => (
             <div
               onClick={() => {
                 setDataSelecionada(item)
-                getLogsByDate(item)
+                navigation('/Logs/' + moment(item).format('YYYY-MM-DD'))
               }}
-              className={moment(dataSelecionada).format('YYYY-MM-DD') === moment(item).format('YYYY-MM-DD') ? "itemDataSelected" : "itemData"}
+              className={moment(params.date).format('YYYY-MM-DD') === moment(item).format('YYYY-MM-DD') ? "itemDataSelected" : "itemData"}
               key={item}>
-              <p>{new Date(item).getDate()}</p>
-              <p>{moment(item).format('MMMM').charAt(0).toUpperCase() + moment(item).format('MMMM').slice(1)}</p>
+              <p>{moment(item).format('MMMM').charAt(0).toUpperCase() + moment(item).format('MMMM/ YY').slice(1)}</p>
             </div>
           ))
         }
       </div>
       {
-        subLoading ?
-          <p className='loadingMsg'>Carregando...</p>
-          :
-          logs.length > 0 ?
-            logs.map((e, index) =>
-              <ItemLog key={index}
-                index={index}
-                logs={logs}
-                dados={e}
-              />
-            )
-            :
-            <p className='loadingMsg'>Nenhum lançamento realizado no dia</p>
+        subLoading &&
+        <p className='loadingMsg'>Carregando...</p>
+      }
+      {
+        logs.length > 0 ?
+          logs.map((e, index) =>
+            <ItemLog key={index}
+              index={index}
+              logs={logs}
+              dados={e}
+            />
+          )
+          : !subLoading &&
+          <p className='loadingMsg'>Nenhum lançamento realizado no dia</p>
       }
 
     </div>

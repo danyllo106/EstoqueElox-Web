@@ -12,13 +12,15 @@ body {
 p {
   margin: 2px;
 }
-a{
+
+a {
   text-decoration: none !important;
   outline: none !important;
 }
+
 /* CONTAINER BACKBUTTON */
-.containerBackButton{
-  position:inherit;
+.containerBackButton {
+  position: inherit;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -27,10 +29,12 @@ a{
   top: 10px;
   padding-bottom: 20px;
 }
-.containerBackButton p{
+
+.containerBackButton p {
   color: #aaa;
   font-size: 18px;
 }
+
 /* CONTAINER MOSTRAR MAIS */
 
 .containerMostrarMais {
@@ -146,12 +150,19 @@ a{
 /* CONTAINER EXTRATO SUCATA */
 
 .containerExtratoSucata {
-  width: 100%;
+  width: calc(100% - 35px);
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   cursor: pointer;
+  margin-bottom: 2px;
+  margin-left: 10px;
+  margin-right: 10px;
+  background-color: white;
+  padding-left: 10px;
+  padding-bottom: 5px;
+
 }
 
 .containerExtratoSucata table {
@@ -160,11 +171,12 @@ a{
 
 .dateHeaderExtratoSucata {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 300;
 }
 
 .infoExtratoSucata {
-  font-size: 24px;
+  font-size: 18px;
+  white-space: nowrap;
 }
 
 .observacaoExtratoSucata {
@@ -174,9 +186,11 @@ a{
   flex-direction: row;
   justify-content: space-between;
 }
-.observacaoExtratoSucata div{
+
+.observacaoExtratoSucata div {
   min-width: 60px;
 }
+
 .observacaoExtratoSucata div {
   display: flex;
   flex-direction: row;
@@ -194,6 +208,7 @@ a{
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  background-color: white;
 }
 
 .containerExtratoEstoque table {
@@ -216,10 +231,12 @@ a{
   flex-direction: row;
   justify-content: space-between;
 }
-.observacaoExtratoEstoque div{
+
+.observacaoExtratoEstoque div {
   min-width: 60px;
 }
-.observacaoExtratoEstoque p{
+
+.observacaoExtratoEstoque p {
   text-align: right;
 }
 
@@ -295,15 +312,17 @@ a{
 }
 
 @media(max-width:720px) {
-  .containerBackButton{
+  .containerBackButton {
     width: 100%;
   }
+
   .menuContainer {
     width: 100%;
     display: flex;
     justify-content: center;
     flex-direction: column-reverse;
   }
+
   .appBar {
     display: flex;
     flex-direction: row;
@@ -314,6 +333,7 @@ a{
     position: fixed;
     bottom: 0px;
   }
+
   .appBar a {
     cursor: pointer;
     font-size: 15px;
@@ -323,6 +343,7 @@ a{
     align-items: center;
     margin-bottom: 0px;
   }
+
   .appBody {
     margin-left: 0px;
     margin-bottom: 80px;
@@ -330,7 +351,7 @@ a{
 }
 
 /* LOG ITEM */
-.logContainer{
+.logContainer {
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -343,7 +364,8 @@ a{
   padding: 5px;
   cursor: pointer;
 }
-.containerDateLogs{
+
+.containerDateLogs {
   background-color: #3498db;
   width: 80px;
   padding: 5px;
@@ -353,7 +375,8 @@ a{
   align-items: center;
   border-radius: 3px;
 }
-.containerDateLogs p{
+
+.containerDateLogs p {
   color: #eee;
   font-size: 22px;
   font-weight: bold;
@@ -361,45 +384,50 @@ a{
 
 
 /* CONTAINER NEWOLD */
-.containerNewOld{
+.containerNewOld {
   display: flex;
   justify-content: center;
 }
-.containerNewOld div{
+
+.containerNewOld div {
   border-bottom: 2px solid #3498db;
   padding: 9px;
   transition: all .2s;
   cursor: pointer;
 }
-.containerNewOld p{
+
+.containerNewOld p {
   color: #aaa;
 }
 
-.containerNewOld .selected p{
+.containerNewOld .selected p {
   color: #3498db !important;
   font-weight: bold;
 }
-.containerNewOld div:hover{
-  background-color: rgba(52, 152, 219,0.3);
+
+.containerNewOld div:hover {
+  background-color: rgba(52, 152, 219, 0.3);
 }
-.containerNewOld div:hover p{
+
+.containerNewOld div:hover p {
   color: #3498db !important;
-} 
+}
 
 @media(max-width:720px) {
-  .containerNewOld{
+  .containerNewOld {
     display: flex;
     justify-content: center;
     width: 100%;
   }
-  .containerNewOld div{
+
+  .containerNewOld div {
     width: 100%;
     text-align: center;
   }
 }
 
 /* CONTAINER LOGIN */
-.containerLogin{
+.containerLogin {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -409,17 +437,20 @@ a{
   bottom: 0;
   left: 0;
   right: 0;
-  
+
 }
-.containerLogin form{
+
+.containerLogin form {
   display: flex;
   flex-direction: column;
 }
-.containerLogin img{
+
+.containerLogin img {
   margin-bottom: 50px;
   margin-top: -60px;
 }
-.containerLogin div:first-child{
+
+.containerLogin div:first-child {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -430,29 +461,31 @@ a{
   height: 60%;
   min-height: 300px;
 }
-.containerLogin input, .containerLogin button{
+
+.containerLogin input, .containerLogin button {
   padding: 10px;
   border-radius: 3px;
-  border:1px solid #ccc;
+  border: 1px solid #ccc;
   font-size: 18px;
   margin: 5px;
   min-width: 300px;
   outline: none;
 }
-.containerLogin button{
+
+.containerLogin button {
   width: calc(100% - 10px);
   cursor: pointer;
-  border:1px solid #3498db;
+  border: 1px solid #3498db;
   background-color: #3498db;
   color: white;
 }
 
 
 /* CONTAINER TOAST */
-.containerToast{
+.containerToast {
   display: flex;
   align-items: center;
-  position:absolute;
+  position: absolute;
   bottom: 10px;
   right: 10px;
   max-width: 500px;
@@ -462,6 +495,7 @@ a{
   border-radius: 3px;
   justify-content: space-between;
 }
-.containerToast p{
+
+.containerToast p {
   color: white;
 }
