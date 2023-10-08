@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {  ExtratoSucata,  lastMonths } from '../../utils/componentes'
-import api from '../../utils/api'
+import {api} from '../../utils/api'
 import { FaRegCalendarAlt } from "react-icons/fa";
 import DatePicker from 'react-datepicker'
 import moment from 'moment';

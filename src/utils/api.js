@@ -1,7 +1,6 @@
 import axios from 'axios'
-
-const api = axios.create({
-  baseURL: 'https://estoque.danyllo106.com'
+//const baseURL =  baseURL: 'https://estoquecaminhao.danyllo106.com'
+export const baseURL = 'https://estoquecaminhao.danyllo106.com';
+export const api = axios.create({
+  baseURL
 })
-
-export default api;

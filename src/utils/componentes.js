@@ -5,7 +5,7 @@ import moment from 'moment'
 import { FaBox, FaCarBattery, FaCaretLeft, FaCheck, FaCheckDouble, FaCommentAlt, FaDolly, FaImage, FaMinus, FaMusic, FaPlus, FaTimes } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
 import Lottie from 'react-lottie'
-import api from './api'
+import {api} from './api'
 import logo from '../assets/logoElox.png'
 import jwt_decode from "jwt-decode";
 function selectColor(value) {
@@ -292,7 +292,7 @@ export function Menu(props) {
   if (logar)
     return (
       <>
-        <div className={"containerLogin"}>
+        <div data-theme={'dark'} className={"containerLogin"}>
           <div>
             <img alt="Imagem de Observação" src={logo} style={{ width: 200 }} />
             <form onSubmit={login}>
@@ -326,7 +326,7 @@ export function Menu(props) {
       </>
     )
   return (
-    <div className="menuContainer">
+    <div data-theme={'dark'} className="menuContainer">
       <div className="appBar">
         <Link to="/" className={location.pathname === "/" ? "selected" : null}>
           <FaBox size={16} fill={"#aaa"} />

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ExtratoEstoque,  lastMonths } from '../../utils/componentes'
-import api from '../../utils/api'
+import {api} from '../../utils/api'
 import moment from 'moment';
 import 'moment/locale/pt-br';
 import { FaRegCalendarAlt } from 'react-icons/fa';

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Carregando, ContainerItem } from '../../utils/componentes'
-import api from '../../utils/api'
+import {api} from '../../utils/api'
 import './style.css'
 import { FaPrint } from 'react-icons/fa';
 import logo from '../../assets/logoElox.png'
@@ -110,7 +110,8 @@ function Index() {
     }
 
   }
-  if (produtosTemp.length <= 0 && !pesquisarValue)
+  
+  if (produtosTemp.length <= 0 && !pesquisarValue && produtos.length===0)
     return <Carregando />
 
   return (

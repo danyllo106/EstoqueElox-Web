@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ExtratoEstoque, BackButton,  lastMonths } from '../../utils/componentes'
-import api from '../../utils/api'
+import {api} from '../../utils/api'
 import { useNavigate, useParams } from 'react-router';
 import moment from 'moment';
 import 'moment/locale/pt-br';
@@ -95,6 +95,8 @@ function Index() {
             className="itemDataIcon"
           />
           <DatePicker
+          className='datepicker'
+          style={{backgroundColor:'red'}}
             selected={dataSelecionada}
             onChange={(date) => {
               setDataSelecionada(date)

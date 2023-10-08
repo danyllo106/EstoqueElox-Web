@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BackButton, Carregando, NewOld } from '../../utils/componentes'
-import api from '../../utils/api'
+import  { api,baseURL } from '../../utils/api'
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import moment from 'moment'
@@ -21,7 +21,7 @@ function Index(props) {
           setLancamento(data.data[0].dados.olddata.lancado)
           setAtualizacao(data.data[0].data)
           console.log(data.data[0])
-          
+
         })
         .catch(err => console.log(err))
     getDados()
@@ -30,12 +30,12 @@ function Index(props) {
   const [funcao, setFuncao] = useState()
   const [newData, setNewData] = useState()
   const [oldData, setOldData] = useState()
-  const [lancamento,setLancamento]=useState()
-  const [atualizacao,setAtualizacao]=useState()
-  function changeState(valor){
-    if(valor==="antigo"){
+  const [lancamento, setLancamento] = useState()
+  const [atualizacao, setAtualizacao] = useState()
+  function changeState(valor) {
+    if (valor === "antigo") {
       setDados(oldData)
-    }else{
+    } else {
       setDados(newData)
     }
   }
@@ -45,7 +45,7 @@ function Index(props) {
     <>
       <div className="containerInfoSucata">
         <BackButton />
-       
+
         <div className="containerLeft">
           <NewOld
             method={changeState}
@@ -81,13 +81,13 @@ function Index(props) {
         <p>Lançado em {moment(lancamento).format('DD/MM/YYYY HH:mm')}</p>
         {
           dados.imagemobs ?
-            <img alt="Imagem de Observação" src={"https://www.estoque.danyllo106.com/uploads/imagens/" + dados.imagemobs} />
+            <img alt="Imagem de Observação" src={baseURL + "/uploads/imagens/" + dados.imagemobs} />
             : null
         }
         {
           dados.audioobs ?
             <AudioPlayer
-              src={"https://estoque.danyllo106.com/uploads/audios/" + dados.audioobs}
+              src={baseURL + "/uploads/audios/" + dados.audioobs}
               onPlay={e => console.log("onPlay")}
             />
             : null

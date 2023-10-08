@@ -10,6 +10,7 @@
   padding: 10px;
   overflow-y: auto;
   max-width: -moz-available;
+  background-color: var(--background-secondary);
 }
 
 .containerRight {
@@ -101,6 +102,12 @@ img {
   fill: #e74c3c;
   
 }
+.datepicker >div{
+  color: red !important;
+}
+.react-datepicker__month-text, .react-datepicker__month-2{
+  color: black;
+}
 #selectDate input{
   /* background-color: transparent;
   border:none;
@@ -115,6 +122,7 @@ img {
   justify-content: center;
   align-items: center;
   border-right: 2px solid #ccc;
+  color: black !important;
 }
 
 .itemDataSelected , .itemData:hover {

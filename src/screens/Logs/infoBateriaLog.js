@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { BackButton, Carregando, ContainerItem,NewOld } from '../../utils/componentes'
-import api from '../../utils/api'
+import { BackButton, Carregando, ContainerItem, NewOld } from '../../utils/componentes'
+import {api, baseURL } from '../../utils/api'
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import moment from 'moment'
@@ -13,13 +13,13 @@ function Index(props) {
       await api.get(`/?funcao=getLogsById&id=${id}&token=${localStorage.getItem('token')}`)
         .then(async (data) => {
           let dados = data.data[0]
-          
-          dados.dados=JSON.parse(dados.dados)
-          dados.dados.newdata.dados=JSON.parse(dados.dados.newdata.dados)
-          dados.dados.newdata.dados.quantidade=JSON.parse(dados.dados.newdata.dados.quantidade)
-          dados.dados.olddata.dados=JSON.parse(dados.dados.olddata.dados)
-          dados.dados.olddata.dados.quantidade=JSON.parse(dados.dados.olddata.dados.quantidade)
-          
+
+          dados.dados = JSON.parse(dados.dados)
+          dados.dados.newdata.dados = JSON.parse(dados.dados.newdata.dados)
+          dados.dados.newdata.dados.quantidade = JSON.parse(dados.dados.newdata.dados.quantidade)
+          dados.dados.olddata.dados = JSON.parse(dados.dados.olddata.dados)
+          dados.dados.olddata.dados.quantidade = JSON.parse(dados.dados.olddata.dados.quantidade)
+
           let info = dados.dados.olddata.dados
           let produtos = info.quantidade;
           setInfo(info)
@@ -36,31 +36,31 @@ function Index(props) {
   }, [id])
   const [info, setInfo] = useState()
   const [dados, setDados] = useState()
-  const [newData,setNewData]=useState()
-  const [oldData,setOldData]=useState()
+  const [newData, setNewData] = useState()
+  const [oldData, setOldData] = useState()
   const [produtos, setProdutos] = useState([])
-  const [lancamento,setLancamento]=useState()
-  const [atualizacao,setAtualizacao]=useState()
-  function changeState(valor){
-    if(valor==="antigo"){
+  const [lancamento, setLancamento] = useState()
+  const [atualizacao, setAtualizacao] = useState()
+  function changeState(valor) {
+    if (valor === "antigo") {
       setDados(oldData)
 
       setInfo(oldData.dados)
       setProdutos(oldData.dados.quantidade)
-    }else{
+    } else {
       setDados(newData)
       setInfo(newData.dados)
       setProdutos(newData.dados.quantidade)
     }
   }
-  if (produtos.length <= 0 )
+  if (produtos.length <= 0)
     return <Carregando />
   return (
     <>
       <div className="containerInfoBateria">
         <BackButton />
         <div className="containerItems">
-        <NewOld
+          <NewOld
             method={changeState}
           />
           <div>
@@ -82,7 +82,7 @@ function Index(props) {
           </div>
           {
             produtos.map((el) =>
-              <ContainerItem key={el.id}  dados={el} />
+              <ContainerItem key={el.id} dados={el} />
             )
           }
 
@@ -103,13 +103,13 @@ function Index(props) {
         <p>Lançado em {moment(lancamento).format('DD/MM/YYYY HH:mm')} </p>
         {
           dados.imagemobs ?
-            <img alt={"Imagem de Observação"} src={"https://www.estoque.danyllo106.com/uploads/imagens/" + dados.imagemobs} />
+            <img alt={"Imagem de Observação"} src={baseURL + "/uploads/imagens/" + dados.imagemobs} />
             : null
         }
         {
           dados.audioobs ?
             <AudioPlayer
-              src={"https://estoque.danyllo106.com/uploads/audios/" + dados.audioobs}
+              src={baseURL + "/uploads/audios/" + dados.audioobs}
               onPlay={e => console.log("onPlay")}
             />
             : null

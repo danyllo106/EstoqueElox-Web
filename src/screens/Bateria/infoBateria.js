@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BackButton, Carregando, ContainerItem } from '../../utils/componentes'
-import api from '../../utils/api'
+import { api, baseURL } from '../../utils/api'
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import moment from 'moment'
@@ -22,7 +22,7 @@ function Index(props) {
         .catch(err => console.log(err))
 
     getDados()
-  }, [id,funcao])
+  }, [id, funcao])
   const [info, setInfo] = useState()
   const [dados, setDados] = useState()
   const [produtos, setProdutos] = useState([])
@@ -52,7 +52,7 @@ function Index(props) {
           </div>
           {
             produtos.map((el) =>
-              <ContainerItem key={el.id}  dados={el} />
+              <ContainerItem key={el.id} dados={el} />
             )
           }
 
@@ -73,13 +73,13 @@ function Index(props) {
         <p>Lançado em <b>{moment(dados.lancado).format('DD/MM/YYYY HH:mm')}</b> por <b>{dados.create_nome}</b></p>
         {
           dados.imagemobs ?
-            <img alt={"Imagem de Observação"} src={"https://www.estoque.danyllo106.com/uploads/imagens/" + dados.imagemobs} />
+            <img alt={"Imagem de Observação"} src={baseURL + "/uploads/imagens/" + dados.imagemobs} />
             : null
         }
         {
           dados.audioobs ?
             <AudioPlayer
-              src={"https://estoque.danyllo106.com/uploads/audios/" + dados.audioobs}
+              src={baseURL + "/uploads/audios/" + dados.audioobs}
               onPlay={e => console.log("onPlay")}
             />
             : null

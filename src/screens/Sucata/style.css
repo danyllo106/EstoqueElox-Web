@@ -1,3 +1,27 @@
+:root {
+  --background-primary: white;
+  --background-secondary: #eee;
+  --text-primary: #363636;
+  --text-secondary: #5a5a5a;
+  --focus: #dfdddd;
+  --accent: #f54545;
+  --accent-rgb: 245, 69, 69;
+  --border-color: #b4b4b4;
+  --red: #d63031;
+  --blue: #0984e3;
+  --green: #55efc4;
+}
+
+[data-theme='dark'] {
+  --background-primary: #363636;
+  --background-secondary: #262626;
+  --focus: #1d1d1d;
+  --text-primary: white;
+  --text-secondary: #dddddd;
+  --accent: #f25c5c;
+  --accent-rgb: 242, 92, 92;
+  --border-color: #4e4e4e;
+}
 .containerInfoSucata {
   display: flex;
   justify-content: space-between;
@@ -9,9 +33,12 @@
   right: 0;
   padding: 10px;
   overflow-y: auto;
+  background-color: var(--background-secondary);
   max-width: -moz-available;
 }
-
+.react-datepicker__month-text, .react-datepicker__month-2{
+  color: black;
+}
 .containerLeft {
   min-width: 50%;
   margin-top: 40px;
@@ -37,14 +64,14 @@
 
 .containerRight p {
   font-size: 18px;
-  color: #aaa;
+  color: var(--border-color);
   margin: 0;
   padding: 0;
 }
 
 .containerObservacao p:nth-child(1) {
   font-size: 18px;
-  color: #aaa
+  color: var(--border-color)
 }
 
 .containerObservacao p:nth-child(2) {
@@ -81,7 +108,7 @@ img {
   cursor: pointer;
   border-bottom: 2px solid transparent;
   transition: all .2s;
-  color: #302d2d;
+  color: var(--text-primary);
 }
 
 .itemDataIcon {
@@ -96,10 +123,10 @@ img {
 .itemDataIcon {
   margin-bottom: -30px;
   padding: 10px;
-  fill: #302d2d;
+  fill: var(--text-primary);
   border-bottom: 4px solid transparent;
   transition: all .2s;
-  fill: #e74c3c;
+  fill: var(--red);
   
 }
 #selectDate input{
@@ -118,15 +145,15 @@ img {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-right: 2px solid #ccc;
+  border-right: 2px solid var(--border-color);
 }
 
 .itemDataSelected , .itemData:hover {
-  border-bottom: 2px solid #e74c3c;
+  border-bottom: 2px solid var(--red);
 }
 
 .itemData:hover p, .itemDataIcon:hover,.itemDataSelected p{
-  color: #e74c3c;
+  color: var(--red);
 }
 .loadingMsg{
   margin-top: 10px;

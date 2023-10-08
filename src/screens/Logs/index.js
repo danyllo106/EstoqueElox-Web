@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 import DatePicker from 'react-datepicker'
 
-import api from '../../utils/api'
+import {api} from '../../utils/api'
 import { Carregando, ItemLog, lastMonths } from '../../utils/componentes';
 import { useNavigate, useParams } from 'react-router-dom';
 function Index() {
